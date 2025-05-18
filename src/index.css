@@ -1,0 +1,335 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #D4AF37;     /* Golden color */
+  --secondary-color: #66a6ff;   /* Blue line color */
+  --tertiary-color: #ff9b9b;    /* Red line color */
+  --button-from: #7b341e;       /* Red-brown gradient start */
+  --button-to: #000000;         /* Black gradient end */
+  --button-hover-from: #fbbf24; /* Yellow hover state */
+  --button-icon: #fdba74;       /* Orange icon color */
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0.8; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.1); }
+}
+
+@keyframes pencilHover {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(-8deg) translateY(-3px); }
+}
+
+/* Custom pencil image styling */
+.pencil-image {
+  position: absolute;
+  left: -190px;
+  top: 100px;
+  height: 250px;
+  transform: rotate(-10deg);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  z-index: 10;
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.pencil-image:hover {
+  animation: pencilHover 3s infinite ease-in-out;
+}
+
+/* Original pencil CSS, kept for reference */
+.pencil {
+  position: absolute;
+  left: -30px;
+  top: 40px;
+  width: 12px;
+  height: 280px;
+  transform: rotate(-8deg);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.pencil:hover {
+  animation: pencilHover 3s infinite ease-in-out;
+}
+
+.pencil::before {
+  content: 'Mastermind a Masterpiece';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  background: linear-gradient(90deg, 
+    #ffd700 0%, 
+    #ffd700 40%,
+    #daa520 40%,
+    #daa520 60%,
+    #ffd700 60%,
+    #ffd700 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 8px;
+  font-family: 'Kalam', cursive;
+  font-weight: bold;
+  color: rgba(139, 69, 19, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    -1px 0 2px rgba(0,0,0,0.1),
+    1px 0 2px rgba(0,0,0,0.1);
+}
+
+.pencil-text {
+  display: none;
+}
+
+.pencil::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(to bottom,
+    #daa520 0%,
+    #8b4513 60%,
+    #000000 100%
+  );
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.pencil-eraser {
+  position: absolute;
+  top: -15px;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background: #ff6b6b;
+  border-radius: 2px 2px 0 0;
+  box-shadow: 
+    0 -1px 2px rgba(0,0,0,0.1),
+    0 1px 2px rgba(0,0,0,0.1);
+}
+
+.pencil-band {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+    #c0c0c0 0%,
+    #ffffff 50%,
+    #c0c0c0 100%
+  );
+}
+
+.flame {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, 
+    rgba(255, 69, 0, 0.8) 0%,
+    rgba(255, 140, 0, 0.6) 40%,
+    rgba(255, 215, 0, 0.4) 70%,
+    rgba(255, 250, 205, 0.2) 90%,
+    transparent 100%
+  );
+  filter: blur(2px);
+  transform-origin: bottom;
+  animation: flicker 3s infinite ease-in-out;
+}
+
+.flame-1 { animation-delay: -0.5s; opacity: 0.6; }
+.flame-2 { animation-delay: -1s; opacity: 0.8; }
+.flame-3 { animation-delay: -1.5s; opacity: 0.7; }
+
+.notebook-background {
+  background-image: 
+    linear-gradient(#fff 23px, #66a6ff 24px, transparent 24px),
+    linear-gradient(90deg, transparent 39px, #ff9b9b 40px, #ff9b9b 40px, transparent 41px);
+  background-size: 100% 24px, 40px 100%;
+  background-position: 0 4px, 40px 0;
+  background-repeat: repeat;
+  background-color: white;
+  padding: 24px 40px;
+  padding-bottom: 100px;
+  position: relative;
+  min-height: calc(100vh - 180px);
+  height: auto;
+  box-shadow: 
+    -1px 0 3px rgba(0, 0, 0, 0.05),
+    1px 0 3px rgba(0, 0, 0, 0.05),
+    0 -1px 3px rgba(0, 0, 0, 0.05),
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    inset 0 0 30px rgba(0, 0, 0, 0.03),
+    0 3px 6px rgba(0, 0, 0, 0.1),
+    0 10px 20px rgba(0, 0, 0, 0.08),
+    inset 0 0 15px rgba(0, 0, 0, 0.02);
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  /* transform: perspective(1000px) rotateX(0.5deg); */ /* Temporarily commented out for testing */
+  margin: 0 auto;
+  width: 100%;
+  max-width: 800px;
+  pointer-events: none;
+}
+
+.notebook-background::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.03) 0%,
+      transparent 5%,
+      transparent 95%,
+      rgba(0, 0, 0, 0.03) 100%
+    );
+  pointer-events: none;
+}
+
+.writing-line {
+  min-height: 24px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  z-index: 1;
+}
+
+.writing-input {
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  line-height: 23px;
+  width: 100%;
+  padding: 0 8px;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: transparent;
+  position: relative;
+  z-index: 2;
+  pointer-events: auto !important;
+  cursor: text !important;
+  transform: translateY(7px);
+}
+
+.writing-input textarea,
+.writing-input input {
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  line-height: 23px;
+  padding: 0;
+  margin: 0;
+  min-height: 24px;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: transparent;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  pointer-events: auto !important;
+  cursor: text !important;
+  transform: translateY(7px);
+}
+
+.rhyme-word, .idea-line {
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  line-height: 24px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* New drop cap styling */
+.drop-cap {
+  position: absolute;
+  top: -8px;
+  left: 2px;
+  font-size: 48px;
+  line-height: 0.8;
+  font-family: 'Brush Script MT', 'Brush Script Std', 'Dancing Script', cursive;
+  color: #000;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  z-index: 3;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Remove unused classes */
+.first-line-with-drop-cap {
+  text-indent: 0 !important;
+}
+
+.first-line-with-drop-cap:first-letter {
+  color: transparent;
+}
+
+/* Remove previous drop cap styling */
+.notebook-background .writing-line:first-child .writing-input::first-letter {
+  font-size: inherit;
+  float: none;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 0;
+  line-height: inherit;
+  color: inherit;
+  font-family: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  text-shadow: none;
+  transform: none;
+}
+
+/* Custom slider styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  margin: 0;
+  height: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #333;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #333;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
