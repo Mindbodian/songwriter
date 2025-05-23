@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'Handwritania';
+  src: url('/fonts/handwritania.regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,6 +17,30 @@
   --button-to: #000000;         /* Black gradient end */
   --button-hover-from: #fbbf24; /* Yellow hover state */
   --button-icon: #fdba74;       /* Orange icon color */
+}
+
+/* Gothic title decorations */
+.gothic-decorator {
+  position: relative;
+}
+
+.gothic-decorator::before,
+.gothic-decorator::after {
+  content: "✦";
+  color: #8B6914;
+  opacity: 0.6;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+}
+
+.gothic-decorator::before {
+  left: -20px;
+}
+
+.gothic-decorator::after {
+  right: -20px;
 }
 
 @keyframes flicker {

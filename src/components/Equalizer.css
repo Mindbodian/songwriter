@@ -1,0 +1,17 @@
+.equalizer-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.9;
+  background-color: rgba(0, 0, 0, 0.7); /* Darker background to make the new color scheme pop */
+}
+
+.equalizer-canvas {
+  width: 100%;
+  height: 100%;
+  filter: contrast(1.1) brightness(1.1);
+} 

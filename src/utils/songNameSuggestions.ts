@@ -18,29 +18,79 @@ export function generateSongNameSuggestions(lyrics: string[]): string[] {
   const significantWords = Object.entries(wordFrequency)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5)
-    .map(([word]) => word);
+    .map(([word]) => capitalize(word));
 
-  // Generate suggestions
-  const suggestions: string[] = [];
+  // Word banks for random generation
+  const adjectives = [
+    'Midnight', 'Golden', 'Neon', 'Silent', 'Lonely', 'Electric', 'Fading', 'Burning', 'Lost', 'Open',
+    'Wild', 'Broken', 'Endless', 'Falling', 'Hidden', 'Crystal', 'Velvet', 'Shadow', 'Sacred', 'Blue',
+    'Crimson', 'Silver', 'Radiant', 'Secret', 'Wandering', 'Echoing', 'Distant', 'Shining', 'Restless', 'Sacred'
+  ];
+  const nouns = [
+    'Dreams', 'Groove', 'Sound', 'Skyline', 'Horizon', 'Reflection', 'Road', 'Soul', 'Night', 'Light',
+    'Fire', 'Rain', 'Heart', 'Song', 'River', 'City', 'Memory', 'Shadow', 'Star', 'Whisper',
+    'Vision', 'Journey', 'Sunrise', 'Twilight', 'Mirage', 'Pulse', 'Wave', 'Desire', 'Promise', 'Flight'
+  ];
+  const templates = [
+    '{adj} {noun}',
+    'The {adj} {noun}',
+    '{noun} of {noun}',
+    '{adj} {noun} Blues',
+    'Under the {adj} {noun}',
+    'Lost in the {noun}',
+    'Echoes of {noun}',
+    'Return to {noun}',
+    'Chasing {noun}',
+    'Between the {noun} and {noun}',
+    'Call of the {adj} {noun}',
+    'Dancing with {noun}',
+    'Beyond the {adj} {noun}',
+    'Into the {adj} {noun}',
+    'Whispers of {noun}',
+    'Fading {noun}',
+    'Neon {noun}',
+    'Midnight {noun}',
+    'Open {noun}',
+    'Skyline {noun}'
+  ];
 
-  // Combine top words
-  if (significantWords.length >= 2) {
-    suggestions.push(
-      `${capitalize(significantWords[0])} ${capitalize(significantWords[1])}`,
-      `The ${capitalize(significantWords[0])}`,
-      `${capitalize(significantWords[0])} ${capitalize(significantWords[significantWords.length - 1])}`
-    );
+  // Helper to pick a random item
+  function pick<T>(arr: T[]): T {
+    return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  // Add first line if it's not too long
-  const firstLine = lyrics.find(line => line.trim())?.trim() || '';
-  if (firstLine && firstLine.length < 30) {
-    suggestions.push(firstLine);
+  // Helper to generate a random title
+  function randomTitle(): string {
+    let template = pick(templates);
+    // 30% chance to use a significant word from lyrics if available
+    let useSig = significantWords.length > 0 && Math.random() < 0.3;
+    let adj = useSig ? pick(significantWords) : pick(adjectives);
+    let noun1 = useSig ? pick(significantWords) : pick(nouns);
+    let noun2 = pick(nouns);
+    return template
+      .replace('{adj}', adj)
+      .replace('{noun}', noun1)
+      .replace('{noun}', noun2);
   }
 
-  return [...new Set(suggestions)];
+  // Always generate 5 unique random suggestions
+  const suggestions = new Set<string>();
+  let tries = 0;
+  while (suggestions.size < 5 && tries < 30) {
+    suggestions.add(randomTitle());
+    tries++;
+  }
+
+  return Array.from(suggestions).slice(0, 5);
 }
 
 function capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function shuffleArray<T>(array: T[]): void {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }

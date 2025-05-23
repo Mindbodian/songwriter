@@ -1,0 +1,57 @@
+.animated-gradient {
+  background: linear-gradient(270deg, #ff6ec4, #7873f5, #1fd1f9, #ff6ec4);
+  background-size: 800% 800%;
+  animation: gradientMove 16s ease infinite;
+  z-index: 0;
+}
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.epic-btn {
+  transition: box-shadow 0.3s, background 0.3s, color 0.3s, border 0.3s;
+  outline: none;
+  border: 1px solid rgba(255, 215, 0, 0.5); /* Yellow, half opacity */
+  box-shadow: 0 0 0 0 #00ffe7;
+}
+.epic-btn:hover, .epic-btn:focus {
+  background: #1fd1f9 !important;
+  color: #fff !important;
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: none;
+}
+
+.epic-btn.glow-active {
+  box-shadow: 0 0 8px 2px #ffd700, 0 0 16px 4px #ff4500, 0 0 0 1px #ffd700;
+  border-color: rgba(255, 215, 0, 0.5);
+  transition: box-shadow 1s, border-color 0.5s;
+}
+
+.epic-title {
+  font-family: 'UnifrakturMaguntia', 'UnifrakturCook', 'Cinzel Decorative', serif;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  color: #FFD700;
+  font-weight: 700;
+  line-height: 1.1;
+  text-shadow:
+    0 0 16px #FFD700,
+    0 0 36px #ff9900,
+    0 0 80px #ff3300,
+    0 0 120px #ff0000,
+    0 0 160px #ff6600,
+    2px 2px 0 #000,
+    0 2px 16px #000;
+  animation: epic-flicker 3.2s infinite alternate;
+}
+
+@keyframes epic-flicker {
+  0% { text-shadow: 0 0 16px #FFD700, 0 0 36px #ff9900, 0 0 80px #ff3300, 0 0 120px #ff0000, 0 0 160px #ff6600, 2px 2px 0 #000, 0 2px 16px #000; }
+  10% { text-shadow: 0 0 32px #FFD700, 0 0 60px #ff9900, 0 0 120px #ff3300, 0 0 180px #ff0000, 0 0 220px #ff6600, 2px 2px 0 #000, 0 2px 24px #000; }
+  20% { text-shadow: 0 0 24px #FFD700, 0 0 48px #ff9900, 0 0 100px #ff3300, 0 0 140px #ff0000, 0 0 180px #ff6600, 2px 2px 0 #000, 0 2px 20px #000; }
+  30% { text-shadow: 0 0 40px #FFD700, 0 0 80px #ff9900, 0 0 160px #ff3300, 0 0 220px #ff0000, 0 0 260px #ff6600, 2px 2px 0 #000, 0 2px 32px #000; }
+  40% { text-shadow: 0 0 16px #FFD700, 0 0 36px #ff9900, 0 0 80px #ff3300, 0 0 120px #ff0000, 0 0 160px #ff6600, 2px 2px 0 #000, 0 2px 16px #000; }
+  100% { text-shadow: 0 0 16px #FFD700, 0 0 36px #ff9900, 0 0 80px #ff3300, 0 0 120px #ff0000, 0 0 160px #ff6600, 2px 2px 0 #000, 0 2px 16px #000; }
+} 

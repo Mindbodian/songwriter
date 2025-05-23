@@ -7,9 +7,10 @@ interface SaveModalProps {
   onSave: (fileName: string) => void;
   currentFileName: string;
   suggestions: string[];
+  onRequestMoreSuggestions: () => void;
 }
 
-export function SaveModal({ isOpen, onClose, onSave, currentFileName, suggestions }: SaveModalProps) {
+export function SaveModal({ isOpen, onClose, onSave, currentFileName, suggestions, onRequestMoreSuggestions }: SaveModalProps) {
   const [fileName, setFileName] = useState(currentFileName);
 
   if (!isOpen) return null;
@@ -25,6 +26,12 @@ export function SaveModal({ isOpen, onClose, onSave, currentFileName, suggestion
     if (e.key === 'Enter') {
       handleSave();
     }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setFileName(suggestion);
+    onSave(suggestion);
+    onClose();
   };
 
   return (
@@ -59,17 +66,23 @@ export function SaveModal({ isOpen, onClose, onSave, currentFileName, suggestion
           {suggestions.length > 0 && (
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-2">Suggestions:</h3>
-              <div className="space-y-2">
+              <div className="space-y-2 mb-2">
                 {suggestions.map((suggestion, index) => (
                   <button
                     key={index}
-                    onClick={() => setFileName(suggestion)}
+                    onClick={() => handleSuggestionClick(suggestion)}
                     className="w-full text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 rounded-md transition-colors"
                   >
                     {suggestion}
                   </button>
                 ))}
               </div>
+              <button
+                onClick={onRequestMoreSuggestions}
+                className="w-full px-3 py-2 text-xs bg-blue-100 hover:bg-blue-200 rounded-md transition-colors"
+              >
+                More Suggestions
+              </button>
             </div>
           )}
         </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, FilePlus, Download, BookOpen, Lightbulb, FolderOpen, Copy, ChevronDown } from 'lucide-react';
+import { Save, FilePlus, Download, BookOpen, Lightbulb, FolderOpen, Copy, ChevronDown, Printer } from 'lucide-react';
 
 export interface ToolbarProps {
   fileName: string;
@@ -10,6 +10,7 @@ export interface ToolbarProps {
   onRhymeDictionary: () => void;
   onIdeas: () => void;
   onCopyLyrics: () => Promise<void>;
+  onPrintLyrics: () => void;
   onInsertStructure: (structure: string) => void;
   onAIHelper: () => void;
   onFileNameChange?: (newName: string) => void;
@@ -34,6 +35,7 @@ export function Toolbar({
   onRhymeDictionary,
   onIdeas,
   onCopyLyrics,
+  onPrintLyrics,
   onInsertStructure,
   onAIHelper,
   onFileNameChange
@@ -147,6 +149,14 @@ export function Toolbar({
         >
           <Copy size={14} className="text-orange-300 group-hover:text-yellow-500" />
           <span>Copy</span>
+        </button>
+        
+        <button
+          onClick={onPrintLyrics}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5"
+        >
+          <Printer size={14} className="text-orange-300 group-hover:text-yellow-500" />
+          <span>Print</span>
         </button>
 
         <div className="relative inline-block">

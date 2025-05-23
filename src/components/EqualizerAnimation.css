@@ -1,0 +1,59 @@
+.equalizer-container {
+  position: absolute;
+  inset: 0;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.equalizer-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 100%;
+  position: relative;
+}
+
+.eq-bar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  margin: 0 1px;
+}
+
+.eq-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: 1px;
+  opacity: 0.85;
+  transform-origin: center;
+  animation: pulse infinite alternate ease-in-out;
+}
+
+.eq-bar:nth-child(8n+1) .eq-dot { background-color: #ff0000; }
+.eq-bar:nth-child(8n+2) .eq-dot { background-color: #ff7700; }
+.eq-bar:nth-child(8n+3) .eq-dot { background-color: #ffff00; }
+.eq-bar:nth-child(8n+4) .eq-dot { background-color: #00ff00; }
+.eq-bar:nth-child(8n+5) .eq-dot { background-color: #00ffff; }
+.eq-bar:nth-child(8n+6) .eq-dot { background-color: #0077ff; }
+.eq-bar:nth-child(8n+7) .eq-dot { background-color: #7700ff; }
+.eq-bar:nth-child(8n+8) .eq-dot { background-color: #ff00ff; }
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+} 
