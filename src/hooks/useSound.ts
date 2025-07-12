@@ -6,12 +6,13 @@ let audioContext: AudioContext | null = null;
 export function useSound() {
   const letterCountRef = { current: 0 };
   const audioRef = { current: null as HTMLAudioElement | null };
+  const toastyAudioRef = { current: null as HTMLAudioElement | null };
 
   // Initialize audio on first use
   const initAudio = () => {
     if (!audioRef.current) {
       audioRef.current = new Audio('/sounds/pencil.ogg');
-      audioRef.current.volume = 0.3;
+      audioRef.current.volume = 1.0;
       // Store the duration once we have it
       audioRef.current.addEventListener('loadedmetadata', () => {
         console.log('Audio duration:', audioRef.current?.duration);
@@ -20,8 +21,24 @@ export function useSound() {
     return audioRef.current;
   };
 
-  const playSound = useCallback((soundType: 'type' | 'enter' | 'panel') => {
+  const initToastyAudio = () => {
+    if (!toastyAudioRef.current) {
+      toastyAudioRef.current = new Audio('/sounds/Toasty - Sound Effect (HD).mp3');
+      toastyAudioRef.current.volume = 0.7;
+    }
+    return toastyAudioRef.current;
+  };
+
+  const playSound = useCallback((soundType: 'type' | 'enter' | 'panel' | 'toasty') => {
     try {
+      if (soundType === 'toasty') {
+        const audio = initToastyAudio();
+        audio.currentTime = 0;
+        audio.play().catch(error => {
+          console.error('Playback failed:', error);
+        });
+        return;
+      }
       if (soundType === 'type') {
         letterCountRef.current++;
         

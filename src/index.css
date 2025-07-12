@@ -5,6 +5,55 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'BlackFlag';
+  src: url('/fonts/BlackFlag.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'The Centurion';
+  src: url('/fonts/TheCenturion.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Minster';
+  src: url('/fonts/minster2.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bulgatti';
+  src: url('/fonts/Bulgatti-x3Wyl.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Baby Angelonia Script';
+  src: url('/fonts/Baby Angelonia Script/Baby Angelonia.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DampfPlatzsh';
+  src: url('/fonts/DampfPlatzsh.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Dampfplatz Shadow Black';
+  src: url('/fonts/Dampfplatzsh.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,6 +66,8 @@
   --button-to: #000000;         /* Black gradient end */
   --button-hover-from: #fbbf24; /* Yellow hover state */
   --button-icon: #fdba74;       /* Orange icon color */
+  --hue: 220; /* Default hue */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 /* Gothic title decorations */
@@ -51,24 +102,6 @@
 @keyframes pencilHover {
   0%, 100% { transform: rotate(-8deg) translateY(0); }
   50% { transform: rotate(-8deg) translateY(-3px); }
-}
-
-/* Custom pencil image styling */
-.pencil-image {
-  position: absolute;
-  left: -190px;
-  top: 100px;
-  height: 250px;
-  transform: rotate(-10deg);
-  transform-origin: center;
-  transition: transform 0.3s ease;
-  cursor: pointer;
-  z-index: 10;
-  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
-}
-
-.pencil-image:hover {
-  animation: pencilHover 3s infinite ease-in-out;
 }
 
 /* Original pencil CSS, kept for reference */
@@ -363,4 +396,87 @@ input[type="range"]::-moz-range-thumb {
   border: 2px solid #333;
   cursor: pointer;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.gothic-title {
+  font-family: 'DampfPlatzsh', serif !important;
+  font-size: 3rem;
+  letter-spacing: 2px;
+  font-weight: 400;
+  line-height: 1.4;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+  background: linear-gradient(to top, #ff3333 0%, #000 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+  overflow: visible;
+  text-shadow: 2px 4px 8px rgba(0,0,0,0.35);
+  -webkit-text-stroke: 1px #fff;
+  text-stroke: 1px #fff;
+}
+
+@keyframes glitch-jitter {
+  0% { transform: none; }
+  10% { transform: translateX(-3px) skewX(-2deg); }
+  20% { transform: translateX(4px) skewX(2deg); }
+  30% { transform: translateX(-2px) skewX(-1deg); }
+  40% { transform: translateX(2px) skewX(1deg); }
+  50% { transform: translateX(-1px); }
+  60% { transform: translateX(1px); }
+  70% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+  90% { transform: translateX(-1px); }
+  100% { transform: none; }
+}
+
+.glitch-jitter {
+  animation: glitch-jitter 0.28s linear 1;
+}
+
+.title-gradient-overlay {
+  pointer-events: none;
+  z-index: 20;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, #ff2222 0%, #fff 100%);
+  opacity: 0.22;
+  mix-blend-mode: lighten;
+  border-radius: 0.15em;
+}
+
+.bling-flare-bg {
+  background: linear-gradient(0deg, #ff3333 0%, #000 100%);
+  border-radius: 0.4em;
+  box-shadow:
+    0 6px 24px 0 rgba(0,0,0,0.45),
+    0 2px 12px 0 rgba(80,60,0,0.18),
+    0 1px 0 #fff inset,
+    1px 1px 2px 0 #bfa14a inset,
+    -1px -1px 2px 0 #fffbe6 inset;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 110%;
+  height: 70%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.bling-flare {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.05em 0.4em;
+  background: none;
+  background-image: linear-gradient(0deg, #ff3333 0%, #000 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }

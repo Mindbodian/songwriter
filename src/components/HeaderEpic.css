@@ -37,13 +37,10 @@
   font-weight: 700;
   line-height: 1.1;
   text-shadow:
-    0 0 16px #FFD700,
-    0 0 36px #ff9900,
-    0 0 80px #ff3300,
-    0 0 120px #ff0000,
-    0 0 160px #ff6600,
-    2px 2px 0 #000,
-    0 2px 16px #000;
+    0 0 1.5px #FFD700,
+    0 0 3px #ff9900,
+    1px 1px 0 #000,
+    0 1.5px 2px #000;
   animation: epic-flicker 3.2s infinite alternate;
 }
 

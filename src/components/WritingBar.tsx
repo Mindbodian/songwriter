@@ -445,7 +445,7 @@ export const WritingBar = forwardRef<WritingBarRef, WritingBarProps>(({
         <span 
           className="drop-cap text-xl font-semibold text-orange-500" 
           style={{ 
-            marginRight: '0.05em',
+            marginRight: '-0.45em',
             lineHeight: '1', 
             paddingTop: '1px'
           }}

@@ -78,12 +78,12 @@ export function Toolbar({
 
   return (
     <div className="bg-gray-900 border-b border-gray-700">
-      <div className="p-3 flex items-center gap-2 flex-wrap">
+      <div className="p-3 flex items-center gap-3 flex-wrap">
         <button
           onClick={onNew}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
         >
-          <FilePlus size={14} className="text-orange-300 group-hover:text-yellow-500" />
+          <FilePlus size={14} />
           <span>New</span>
         </button>
         <button
@@ -97,23 +97,23 @@ export function Toolbar({
             };
             input.click();
           }}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
         >
-          <FolderOpen size={14} className="text-orange-300 group-hover:text-yellow-500" />
+          <FolderOpen size={14} />
           <span>Open</span>
         </button>
         <button
           onClick={onSave}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
         >
-          <Save size={14} className="text-orange-300 group-hover:text-yellow-500" />
+          <Save size={14} />
           <span>Save</span>
         </button>
         <button
           onClick={onSaveAs}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
         >
-          <Download size={14} className="text-orange-300 group-hover:text-yellow-500" />
+          <Download size={14} />
           <span>Save As</span>
         </button>
 
@@ -121,23 +121,23 @@ export function Toolbar({
 
         <button
           onClick={onRhymeDictionary}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
         >
-          <BookOpen size={14} className="text-orange-300 group-hover:text-yellow-500" />
+          <BookOpen size={14} />
           <span>Rhymes</span>
         </button>
         <button
           onClick={onIdeas}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
         >
-          <Lightbulb size={14} className="text-orange-300 group-hover:text-yellow-500" />
+          <Lightbulb size={14} />
           <span>Ideas</span>
         </button>
         <button
           onClick={onAIHelper}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
         >
-          <span>✨</span>
+          <span className="text-amber-400">✨</span>
           <span>AI Helper</span>
         </button>
 
@@ -145,26 +145,26 @@ export function Toolbar({
 
         <button
           onClick={onCopyLyrics}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
         >
-          <Copy size={14} className="text-orange-300 group-hover:text-yellow-500" />
+          <Copy size={14} />
           <span>Copy</span>
         </button>
         
         <button
           onClick={onPrintLyrics}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
         >
-          <Printer size={14} className="text-orange-300 group-hover:text-yellow-500" />
+          <Printer size={14} />
           <span>Print</span>
         </button>
 
         <div className="relative inline-block">
           <button 
             onClick={() => setIsStructureOpen(!isStructureOpen)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md shadow-md transition-all duration-200 bg-gradient-to-b from-red-900 to-black text-white hover:from-yellow-400 hover:to-black hover:shadow-lg active:shadow-sm active:transform active:translate-y-0.5 ${isStructureOpen ? 'from-yellow-400 to-black' : ''}`}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
           >
-            <ChevronDown size={14} className="text-orange-300 group-hover:text-yellow-500" />
+            <ChevronDown size={14} />
             <span>Structure</span>
           </button>
           

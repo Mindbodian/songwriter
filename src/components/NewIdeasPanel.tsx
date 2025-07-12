@@ -8,8 +8,6 @@ interface NewIdeasPanelProps {
 }
 
 export function NewIdeasPanel({ onClose, onImportLine, currentLineIndex }: NewIdeasPanelProps) {
-  console.log('NewIdeasPanel: Started rendering');
-  
   // Initialize with a few empty strings to ensure the editor has space to work with
   const [ideas, setIdeas] = useState<string[]>(Array(20).fill(''));
   const [isDirty, setIsDirty] = useState(false);
@@ -20,7 +18,6 @@ export function NewIdeasPanel({ onClose, onImportLine, currentLineIndex }: NewId
 
   // Load ideas from localStorage on component mount
   useEffect(() => {
-    console.log('NewIdeasPanel: useEffect running');
     const savedIdeas = localStorage.getItem('songwritingIdeas');
     const savedTitle = localStorage.getItem('songwritingIdeasTitle');
     
@@ -31,7 +28,6 @@ export function NewIdeasPanel({ onClose, onImportLine, currentLineIndex }: NewId
     if (savedIdeas) {
       try {
         const parsed = JSON.parse(savedIdeas);
-        console.log('NewIdeasPanel: Loaded ideas from localStorage:', parsed);
         
         if (Array.isArray(parsed) && parsed.length > 0) {
           // Always ensure we have at least 20 lines total with padding at the end
@@ -41,19 +37,14 @@ export function NewIdeasPanel({ onClose, onImportLine, currentLineIndex }: NewId
             paddedIdeas.push('');
           }
           setIdeas(paddedIdeas);
-        } else {
-          console.log('NewIdeasPanel: Saved ideas were empty or invalid, using default');
         }
       } catch (e) {
-        console.error('NewIdeasPanel: Error parsing saved ideas:', e);
+        // Silently handle parse errors
       }
-    } else {
-      console.log('NewIdeasPanel: No saved ideas found in localStorage');
     }
   }, []);
 
   const saveIdeas = () => {
-    console.log('NewIdeasPanel: Saving ideas');
     const filteredIdeas = ideas.filter(idea => idea.trim() !== '');
     localStorage.setItem('songwritingIdeas', JSON.stringify(filteredIdeas));
     localStorage.setItem('songwritingIdeasTitle', title);
@@ -61,8 +52,6 @@ export function NewIdeasPanel({ onClose, onImportLine, currentLineIndex }: NewId
   };
 
   const handleChange = (index: number, value: string) => {
-    console.log(`NewIdeasPanel: Handling change at index ${index}, new value: "${value}"`);
-    
     const newIdeas = [...ideas];
     newIdeas[index] = value;
     
@@ -79,11 +68,9 @@ export function NewIdeasPanel({ onClose, onImportLine, currentLineIndex }: NewId
   };
 
   const handleImport = (idea: string) => {
-    console.log(`NewIdeasPanel: handleImport called. Importing idea: "${idea}" to main editor line index: ${currentLineIndex}`);
     // Call onImportLine with the idea text
     onImportLine(idea, currentLineIndex);
     // Force panel to close
-    console.log('NewIdeasPanel: Explicitly closing ideas panel');
     onClose();
   };
 
@@ -128,7 +115,7 @@ export function NewIdeasPanel({ onClose, onImportLine, currentLineIndex }: NewId
     }
   };
 
-  console.log('NewIdeasPanel: Current ideas array:', ideas);
+
 
   return (
     <div className="fixed inset-0 bg-blue-50 z-50 flex flex-col">

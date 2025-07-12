@@ -1,0 +1,500 @@
+/* Set up body and HTML for sticky footer use */
+html {
+    position: relative;
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background: url('../images/bcbg.jpg');
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background-color: #f5f5f5;
+}
+
+h4, h5 {
+    text-align: center;
+}
+
+hr {
+    width: 100%;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.introNarrative-centered {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.card {
+    margin-bottom: .75rem;
+}
+
+#account-card-body {
+    margin-top: 1rem;
+}
+
+#terms-conditions-card > .card {
+    margin-top: .75rem;
+}
+
+#terms-conditions-card > .card h5 {
+    text-align: left;
+    text-decoration: underline;
+}
+
+#terms-conditions-card p {
+    font-size: smaller;
+    font-style: italic;
+}
+
+#terms-conditions-card p:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Style content card like Bootstrap 3 well */
+#content.card {
+    border-radius: 0.5rem;
+    background-color: #f5f5f5;
+    padding: 4%;
+}
+
+/* Use % padding for container to give more room for content at xs screen size */
+.container {
+    padding: 2%;
+}
+
+/* Squbeeze form inputs closer together */
+/*
+form .col-xs-1, form .col-sm-1, form .col-md-1, form .col-lg-1, form .col-xs-2, form .col-sm-2, form .col-md-2, form .col-lg-2, form .col-xs-3, form .col-sm-3, form .col-md-3, form .col-lg-3, form .col-xs-4, form .col-sm-4, form .col-md-4, form .col-lg-4, form .col-xs-5, form .col-sm-5, form .col-md-5, form .col-lg-5, form .col-xs-6, form .col-sm-6, form .col-md-6, form .col-lg-6, form .col-xs-7, form .col-sm-7, form .col-md-7, form .col-lg-7, form .col-xs-8, form .col-sm-8, form .col-md-8, form .col-lg-8, form .col-xs-9, form .col-sm-9, form .col-md-9, form .col-lg-9, form .col-xs-10, form .col-sm-10, form .col-md-10, form .col-lg-10, form .col-xs-11, form .col-sm-11, form .col-md-11, form .col-lg-11, form .col-xs-12, form .col-sm-12, form .col-md-12, .col-lg-12 {
+    padding-right: .5rem;
+    padding-left: .5rem;
+}
+*/
+
+/* Credit card type styles */
+
+form #paymentmethod-cardnumber {
+    background-image: url(../images/cardLogos/blankcard.png);
+    background-position: unset;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    padding-left: 64px;
+    padding-right: 0.75rem;
+}
+
+form #paymentmethod-cardnumber.visa { background-image: url(../images/cardLogos/visa.png); }
+form #paymentmethod-cardnumber.mastercard { background-image: url(../images/cardLogos/mastercard.png); }
+form #paymentmethod-cardnumber.amex { background-image: url(../images/cardLogos/amex.png); }
+form #paymentmethod-cardnumber.discover { background-image: url(../images/cardLogos/discover.png); }
+
+.acceptedCard {
+    width: 40px;
+    margin: 2px;
+}
+
+.btn-account-type {
+    min-width: 130px;
+    margin: 4px;
+}
+
+@media (max-width: 767px) {
+    .btn-account-type {
+        width: 100%;
+    }    
+}
+
+.btn-group-method {
+    margin-bottom: 3%;
+    vertical-align: top;
+}
+
+.btn-group > .btn-method {
+    width: 200px;
+    text-align: left;
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+.btn-group > .btn-method-action  {
+    width: 50px;
+    text-align: center;
+}
+
+.btn-group > .btn-method-new {
+    text-align: center;
+}
+
+.btn-group > .btn-method,
+.btn-group > .btn-method-action {
+    height: 6rem;
+    line-height: 1.25;
+    padding: 0;
+}
+
+/*
+.btn-method > span.method-number {
+}
+*/
+
+.btn-method img.cardType {
+    vertical-align: top;
+    float: left;
+    height: 2.5rem;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.btn-method > span.method-name {
+    font-size: .9rem;
+    padding-left: 8px;
+}
+
+/*.btn-method .fa {*/
+.btn-method .fa-check {
+    color: #f0f0f0;
+}
+
+.btn-method-action .fa {
+    margin-top: 30px;
+    font-size: 1.5rem;
+}
+
+.btn-method-action span.label {
+    font-size: .8rem;
+}
+
+.btn-method.active .fa-check, .btn-method.active:focus .fa-check {
+    color: #5cb85c;
+}
+
+.btn-method:hover .fa-check {
+    color: #999;
+}
+
+.btn-method.active:hover .fa-check {
+    color: #66cc66;
+}
+
+.btn-method:hover .fa-times, .btn-method:active .fa-times, .btn-method:focus .fa-times {
+    color: #d9534f;
+}
+
+/* Give button group borders more obvious pop */
+
+.bs4a-btn-secondary.active, .bs4a-btn-secondary:active,
+.bs4a-btn-secondary.focus, .bs4a-btn-secondary:focus,
+.bs4a-btn-secondary:active:focus, .bs4a-btn-secondary:active.focus, .bs4a-btn-secondary.active.focus {
+    border: 1px solid #4cae4c;
+    background-color: #e6e6e6;
+}
+
+.bs4a-btn-secondary:hover, .bs4a-btn-secondary:active:hover, .bs4a-btn-secondary.active:hover {
+    border: 1px solid #4cae4c;
+    background-color: #eee;
+}
+
+.bs4a-btn-secondary {
+    color: #292b2c;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.selectBillBtn {
+    display: flex;
+    line-height: 1.25;
+    margin-bottom: 2px;
+    margin-top: 8px;
+}
+
+.selectBillBtn p {
+    white-space: normal;
+}
+
+.selectBillBtn .col-md-6.text-md-left p,
+.selectBillBtn .col-sm-6.text-sm-left p {
+    font-size: smaller;
+}
+
+.selectBillBtn .billIcon {
+    cursor: pointer;
+}
+
+.editBillAmountCancel, .editBillAmountConfirm {
+    margin-left: 5px;
+}
+
+/* Remove scroller from number input */
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* Temporary override styles for Bootstrap 4 Alpha */
+
+.form-group > label {
+    margin-left: 4px;
+    margin-bottom: 0;
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.modalHeader-blue {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+.card-info {
+    background-color: #5bc0de;
+    border-color: #5bc0de;
+}
+
+.card-inverse .card-blockquote,
+.card-inverse .card-footer,
+.card-inverse .card-header,
+.card-inverse .card-title {
+    color: #fff;
+}
+
+.card-inverse {
+    color: rgba(255,255,255,.65);
+}
+
+.alert ul {
+    margin-bottom: 0;
+}
+
+.card .card-header-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.border-warning .card-header {
+    color: #f0ad4e;
+    background-color: #fffffe;
+    border-color: #f0ad4e;
+}
+
+.btn-spinner {
+    border: 1px solid rgba(0,0,0,.15);
+}
+
+.btn-spinner .fa {
+    font-size: 12px;
+}
+
+.btn-default {
+    color: #333;
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+/* Views -> Bills -> select.php */
+.selected-bills-total {
+    text-align: right;
+}
+
+/* Views -> Bills -> login.php */
+#guest-card,
+#login-card {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#guest-card .card-header span {
+    font-size: 13px;
+}
+
+#content .titleImg {
+    /*height: auto;*/
+    min-height: 1px;
+    width: 100%;
+}
+
+#content .stripeImg {
+    display: block;
+    /*height: auto;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: .5rem;
+    min-height: 1px;
+    width: 60%;
+}
+
+/*
+.kv-password { width: 100%; }
+.kv-password input[type='text'],
+.kv-password input[type='password'] {
+    width: 100%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+*/
+
+.inlineMargin {
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.card-dark {
+    background-color: #333;
+    border-color: #333;
+}
+
+.card-gray {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+.card-blue {
+    background-color: #212660;
+    border-color: #212660;
+}
+
+.card-header .card-title {
+    margin-bottom: 0;
+}
+
+.hidden { display: none; }
+
+.btn-48 {
+    width: 48%;
+}
+
+.text-white { color: #fff; }
+
+.btn-green {
+    color: #fff;
+    background-color: #0275d8;
+    border-color: #0275d8;
+}
+
+.card-subtitle {
+    margin-top: 0;
+}
+
+.card-group-payment .card {
+    background-color: #dfdfdf;
+    border-radius: 0.25rem !important;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.card-group-payment .card-title {
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 20px;
+}
+
+.card-group-payment .learn-more {
+    border-top: 1px solid #f0f0f0;
+    margin-top: 20px;
+}
+
+.card-group-payment .card-selected {
+    background-color: #fff;
+    border: 1px solid green !important;
+}
+
+.setAccountType {
+    cursor: pointer;
+}
+
+/* Checkout page */
+/* Add back the dot for the radio input */
+#guestOrLogin .btn-group label input {
+    position: static;
+}
+
+@media (min-width: 768px) {
+    #guestOrLogin .btn-group label input + span {
+        display: inline-block;
+        margin-top: 10px;
+    }
+    /* Hack for IE */
+    #guestOrLogin .btn-group label > .row {
+        min-width: 240px;
+    }
+}
+
+@media (max-width: 767px) {
+    #guestOrLogin .btn-group label {
+        font-size: 15px;
+    }
+}
+
+.select2-container--krajee .select2-results__option[aria-disabled=true],
+.select2-container--krajee-bs4 .select2-results__option[aria-disabled=true] {
+    font-weight: 700;
+    opacity: 1;
+}
+
+/* org/DB11E2BC04D0475 */
+.select2-container--krajee .select2-selection__clear {
+    top: 0;
+}
+
+.billItemRow .btn.btn-sm {
+    line-height: 1.25;
+    width: 100px;
+}
+
+.formFooter > div > .pull-right,
+.formFooter > div > .pull-left {
+    margin-top: 4%;
+}
+
+/*.formFooter .btn.btn-primary {*/
+/*    width: 135px;*/
+/*}*/
+
+.sectigoBadge {
+    margin-bottom: 25px;
+}
+
+.sectigoBadge img {
+    height: 42px;
+    width: 106px;
+}
+
+/* Used on the input appends */
+@media (max-width: 575px) {
+    .hidden-xs-down {
+        display: none !important;
+    }
+}
+
+#login-form .btn-group > .btn {
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+#receipt-panel .card-body {
+    padding: 2%;
+}
+
+/* Hack for IE, BS4 and Xpress-Pay logo */
+.card > .card-header.card-blue > img {
+    max-height: 30px;
+}

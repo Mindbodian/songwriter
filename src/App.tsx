@@ -35,6 +35,13 @@ import { ParentalAdvisoryWarning } from './components/ParentalAdvisoryWarning';
  * - WritingBar: Individual line editor with special formatting
  * - Suggestions: Panel showing contextual suggestions
  */
+export interface MPCPad {
+  id: number;
+  audioUrl: string | null;
+  isLooping: boolean;
+  speed: number; // 1.0 = normal speed
+}
+
 export function App() {
   const [bars, setBars] = useState<string[]>(Array(25).fill(''));
   const [currentBarIndex, setCurrentBarIndex] = useState(0);
@@ -53,6 +60,15 @@ export function App() {
   const [advisoryAnimate, setAdvisoryAnimate] = useState(false);
   const [saveModalSuggestions, setSaveModalSuggestions] = useState<string[]>(() => generateSongNameSuggestions(bars));
   const [suggestionHistory, setSuggestionHistory] = useState<Set<string>>(new Set());
+  const [hasPlayedToasty, setHasPlayedToasty] = useState(false);
+  const [showToastyImage, setShowToastyImage] = useState(false);
+  const [mpcPads, setMpcPads] = useState<MPCPad[]>(
+    Array.from({ length: 8 }, (_, i) => ({ id: i + 1, audioUrl: null, isLooping: true, speed: 1.0 }))
+  );
+  const [hasPlayedStartupSound, setHasPlayedStartupSound] = useState(false);
+  // Remove selectedPad and setSelectedPad state
+  // Add activePadIndex state to track the currently playing pad
+  const [activePadIndex, setActivePadIndex] = useState<number | null>(null);
 
   const {
     fileName,
@@ -83,6 +99,31 @@ export function App() {
     setWordCount(text.trim().split(/\s+/).filter(word => word !== '').length);
   }, [bars]);
 
+  // Play ahhhhh sound 1 second after page load with fade-out
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const audio = new Audio('/sounds/ahhhhh.mp3');
+      audio.volume = 0.6;
+      audio.play().catch(() => {});
+      
+      // Start fade-out after 2 seconds
+      const fadeTimer = setTimeout(() => {
+        const fadeInterval = setInterval(() => {
+          if (audio.volume > 0.01) {
+            audio.volume -= 0.01;
+          } else {
+            audio.pause();
+            clearInterval(fadeInterval);
+          }
+        }, 50); // Fade out over ~3 seconds
+      }, 2000);
+
+      return () => clearTimeout(fadeTimer);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Standard mild bad word list
   const BAD_WORDS = [
     'fuck', 'shit', 'bitch', 'asshole', 'bastard', 'dick', 'pussy', 'cunt', 'cock', 'fag', 'slut', 'whore', 'crap', 'douche', 'bollocks', 'bugger', 'bloody', 'arse', 'wank', 'prick', 'twat', 'tit', 'piss', 'shag', 'git', 'twit', 'darn', 'hell'
@@ -97,9 +138,18 @@ export function App() {
         setAdvisoryAnimate(true);
       }
       setShowAdvisory(true);
+      if (!hasPlayedToasty) {
+        playSound('toasty');
+        setHasPlayedToasty(true);
+        setTimeout(() => {
+          setShowToastyImage(true);
+          setTimeout(() => setShowToastyImage(false), 1000); // Show for 1 second
+        }, 200); // Delay by 0.2 seconds
+      }
     } else {
       setShowAdvisory(false);
       setAdvisoryAnimate(false);
+      setHasPlayedToasty(false);
     }
   }, [bars]);
 
@@ -333,138 +383,176 @@ export function App() {
     setSaveModalSuggestions(generateSongNameSuggestions(bars));
   };
 
+  // Handler for AudioUploadModal to update pad audio/looping, preserving speed
+  const handlePadAudioSave = (padId: number, audioUrl: string, isLooping: boolean, fileName: string) => {
+    setMpcPads(prev => prev.map(pad => pad.id === padId ? { ...pad, audioUrl, isLooping } : pad));
+  };
+
+  // Handler to update speed for a pad
+  const handlePadSpeedChange = (padId: number, speed: number) => {
+    setMpcPads(prev => prev.map(pad => pad.id === padId ? { ...pad, speed } : pad));
+  };
+
   return (
     <AudioProvider>
-      <Router>
-        <Routes>
-          <Route path="/game" element={<PlatformerGame />} />
-          <Route path="/" element={
-            <div className="min-h-screen bg-gray-900 flex flex-col">
-              <Header charCount={charCount} wordCount={wordCount} />
-              <ParentalAdvisoryWarning show={showAdvisory} animate={advisoryAnimate} onAnimationEnd={handleAdvisoryAnimationEnd} />
-              
-              <Toolbar
-                fileName={fileName}
-                onNew={handleNew}
-                onOpen={handleOpen}
-                onSave={handleSave}
-                onSaveAs={handleShowSaveModal}
-                onRhymeDictionary={() => setShowRhymeDictionary(true)}
-                onIdeas={() => setShowIdeasPanel(true)}
-                onCopyLyrics={handleCopyLyrics}
-                onInsertStructure={handleInsertStructure}
-                onAIHelper={() => setShowAIHelper(true)}
-                onPrintLyrics={handlePrintLyrics}
-              />
+      <div className="relative min-h-screen">
+        <Router>
+          <Routes>
+            <Route path="/game" element={<PlatformerGame />} />
+            <Route path="/" element={
+              <div className="min-h-screen bg-gray-900 flex flex-col">
+                <Header
+                  charCount={charCount}
+                  wordCount={wordCount}
+                  mpcPads={mpcPads}
+                  onPadAudioSave={handlePadAudioSave}
+                  activePadIndex={activePadIndex}
+                  setActivePadIndex={setActivePadIndex}
+                  onPadSpeedChange={handlePadSpeedChange}
+                />
+                <ParentalAdvisoryWarning show={showAdvisory} animate={advisoryAnimate} onAnimationEnd={handleAdvisoryAnimationEnd} />
+                
+                <Toolbar
+                  fileName={fileName}
+                  onNew={handleNew}
+                  onOpen={handleOpen}
+                  onSave={handleSave}
+                  onSaveAs={handleShowSaveModal}
+                  onRhymeDictionary={() => setShowRhymeDictionary(true)}
+                  onIdeas={() => setShowIdeasPanel(true)}
+                  onCopyLyrics={handleCopyLyrics}
+                  onInsertStructure={handleInsertStructure}
+                  onAIHelper={() => setShowAIHelper(true)}
+                  onPrintLyrics={handlePrintLyrics}
+                />
 
-              <div className="flex-1 flex overflow-hidden">
-                <div className="flex-1 overflow-y-auto p-4">
-                  <div className="notebook-background">
-                    <div className="w-full">
-                      {bars.map((content, index) => {
-                        // Determine if previous line is a structure
-                        const prevLineIsStructure = index > 0 && 
-                          bars[index-1].trim().startsWith('[') && 
-                          bars[index-1].includes(']');
-                          
-                        return (
-                          <WritingBar
-                            key={index}
-                            ref={index === currentBarIndex ? currentBarRef : null}
-                            content={content}
-                            onChange={(newContent) => {
-                              if (index === currentBarIndex) {
-                                handleBarChange(newContent);
-                              }
-                            }}
-                            onEnter={handleEnterKey}
-                            isFocused={index === currentBarIndex}
-                            onFocus={() => setCurrentBarIndex(index)}
-                            index={index}
-                            isStructureLine={content.trim().startsWith('[') && content.includes(']')}
-                            prevLineIsStructure={prevLineIsStructure}
-                            onTextOverflow={(overflowText, overflowIndex) => {
-                              // Handle text overflow by moving text to the next line
-                              const newBars = [...bars];
-                              
-                              // If we're at the last line, add a new one
-                              if (overflowIndex === newBars.length - 1) {
-                                newBars.push(overflowText);
-                              } else {
-                                // Otherwise, insert the overflow text at the beginning of next line
-                                newBars[overflowIndex + 1] = overflowText + newBars[overflowIndex + 1];
-                              }
-                              
-                              setBars(newBars);
-                            }}
-                          />
-                        );
-                      })}
+                <div className="flex-1 flex overflow-hidden">
+                  <div className="flex-1 overflow-y-auto p-4">
+                    <div className="notebook-background">
+                      <div className="w-full">
+                        {bars.map((content, index) => {
+                          // Determine if previous line is a structure
+                          const prevLineIsStructure = index > 0 && 
+                            bars[index-1].trim().startsWith('[') && 
+                            bars[index-1].includes(']');
+                            
+                          return (
+                            <WritingBar
+                              key={index}
+                              ref={index === currentBarIndex ? currentBarRef : null}
+                              content={content}
+                              onChange={(newContent) => {
+                                if (index === currentBarIndex) {
+                                  handleBarChange(newContent);
+                                }
+                              }}
+                              onEnter={handleEnterKey}
+                              isFocused={index === currentBarIndex}
+                              onFocus={() => setCurrentBarIndex(index)}
+                              index={index}
+                              isStructureLine={content.trim().startsWith('[') && content.includes(']')}
+                              prevLineIsStructure={prevLineIsStructure}
+                              onTextOverflow={(overflowText, overflowIndex) => {
+                                // Handle text overflow by moving text to the next line
+                                const newBars = [...bars];
+                                
+                                // If we're at the last line, add a new one
+                                if (overflowIndex === newBars.length - 1) {
+                                  newBars.push(overflowText);
+                                } else {
+                                  // Otherwise, insert the overflow text at the beginning of next line
+                                  newBars[overflowIndex + 1] = overflowText + newBars[overflowIndex + 1];
+                                }
+                                
+                                setBars(newBars);
+                              }}
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div 
+                    style={{ width: `${panelWidth}px` }}
+                    className="flex-none bg-gray-800 relative"
+                  >
+                    <div
+                      className="absolute left-0 top-0 w-1 h-full cursor-ew-resize hover:bg-orange-500 transition-colors"
+                      onMouseDown={startResize}
+                    />
+                    <div className="h-full border-l border-gray-700">
+                      <Suggestions
+                        lastWord={lastWord}
+                        savedLines={getAllSavedLines()}
+                        onSelect={handleSuggestionSelect}
+                        onClose={() => {}}
+                      />
                     </div>
                   </div>
                 </div>
 
-                <div 
-                  style={{ width: `${panelWidth}px` }}
-                  className="flex-none bg-gray-800 relative"
-                >
-                  <div
-                    className="absolute left-0 top-0 w-1 h-full cursor-ew-resize hover:bg-orange-500 transition-colors"
-                    onMouseDown={startResize}
+                {showRhymeDictionary && (
+                  <RhymeDictionary
+                    isOpen={showRhymeDictionary}
+                    onClose={() => setShowRhymeDictionary(false)}
+                    initialWord={lastWord}
                   />
-                  <div className="h-full border-l border-gray-700">
-                    <Suggestions
-                      lastWord={lastWord}
-                      savedLines={getAllSavedLines()}
-                      onSelect={handleSuggestionSelect}
-                      onClose={() => {}}
-                    />
-                  </div>
-                </div>
+                )}
+
+                {showIdeasPanel && (
+                  <IdeasPanel
+                    onClose={() => setShowIdeasPanel(false)}
+                    onImportLine={(line) => {
+                      handleBarChange(line);
+                      handleEnterKey();
+                    }}
+                    currentLineIndex={currentBarIndex}
+                  />
+                )}
+
+                {showSaveModal && (
+                  <SaveModal
+                    isOpen={showSaveModal}
+                    onClose={() => setShowSaveModal(false)}
+                    onSave={handleSaveConfirm}
+                    currentFileName={fileName}
+                    suggestions={saveModalSuggestions}
+                    onRequestMoreSuggestions={handleMoreSuggestions}
+                  />
+                )}
+
+                {showAIHelper && (
+                  <AILyricHelper
+                    isOpen={showAIHelper}
+                    onClose={() => setShowAIHelper(false)}
+                    lastWord={lastWord}
+                    onSelect={handleSuggestionSelect}
+                  />
+                )}
+
+                {showToastyImage && (
+                  <img
+                    src="/assets/toasty.png"
+                    alt="Toasty!"
+                    style={{
+                      position: 'fixed',
+                      right: 24,
+                      bottom: 24,
+                      width: 120,
+                      height: 'auto',
+                      zIndex: 9999,
+                      pointerEvents: 'none',
+                      transition: 'opacity 0.3s',
+                      opacity: showToastyImage ? 1 : 0,
+                    }}
+                  />
+                )}
               </div>
-
-              {showRhymeDictionary && (
-                <RhymeDictionary
-                  isOpen={showRhymeDictionary}
-                  onClose={() => setShowRhymeDictionary(false)}
-                  initialWord={lastWord}
-                />
-              )}
-
-              {showIdeasPanel && (
-                <IdeasPanel
-                  onClose={() => setShowIdeasPanel(false)}
-                  onImportLine={(line) => {
-                    handleBarChange(line);
-                    handleEnterKey();
-                  }}
-                  currentLineIndex={currentBarIndex}
-                />
-              )}
-
-              {showSaveModal && (
-                <SaveModal
-                  isOpen={showSaveModal}
-                  onClose={() => setShowSaveModal(false)}
-                  onSave={handleSaveConfirm}
-                  currentFileName={fileName}
-                  suggestions={saveModalSuggestions}
-                  onRequestMoreSuggestions={handleMoreSuggestions}
-                />
-              )}
-
-              {showAIHelper && (
-                <AILyricHelper
-                  isOpen={showAIHelper}
-                  onClose={() => setShowAIHelper(false)}
-                  lastWord={lastWord}
-                  onSelect={handleSuggestionSelect}
-                />
-              )}
-            </div>
-          } />
-        </Routes>
-      </Router>
+            } />
+          </Routes>
+        </Router>
+      </div>
     </AudioProvider>
   );
 }
