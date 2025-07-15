@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
     "target": "ES2020",
     "experimentalDecorators": true,
@@ -27,4 +28,11 @@
       "@/*" :  ["./*"]
     }
   }
+=======
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+>>>>>>> 543fbafb29d30ce3fa4ccadafe813da237790c02
 }

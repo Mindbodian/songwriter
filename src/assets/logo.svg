@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="120" viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&amp;display=swap');
+        </style>
+    </defs>
+    <g>
+        <!-- Crown -->
+        <path fill="#D4AF37" d="
+            M60 15
+            L70 25 L80 15 L90 25 L85 35 L35 35 L30 25 L40 15 L50 25 L60 15Z
+            M35 35 L45 45 L75 45 L85 35 Z"
+        />
+        <!-- MS Letters -->
+        <text x="60" y="85" 
+            text-anchor="middle" 
+            font-family="Cinzel, serif" 
+            font-size="45" 
+            font-weight="600" 
+            fill="white"
+            letter-spacing="1">MS</text>
+    </g>
+</svg> 
