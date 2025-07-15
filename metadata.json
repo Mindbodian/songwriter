@@ -1,0 +1,6 @@
+
+{
+  "name": "React Audio Sampler Pad",
+  "description": "An interactive audio sampler application. Upload your audio files, trim them, and assign them to pads for playback. Features looping, a detailed waveform editor with zoom and pan, and a 16-pad grid.",
+  "requestFramePermissions": []
+}
