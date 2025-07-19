@@ -1,89 +1,115 @@
-# Mindbodian Soulman Lyric Writer
+# Project Bolt - Music Production App
 
-A specialized lyric writing application built with React, TypeScript, and Vite.
+A React-based music production application with lyric writing tools, MPC-style beat pads, and audio upload capabilities.
 
 ## Features
 
-### Core Writing Features
-- **Line-by-Line Writing**: Each line is a separate input for focused writing
-- **Structure Tags**: Insert structural elements like Verse, Chorus, Bridge, etc. 
-- **Special Formatting**:
-  - Structure tags are displayed in bold
-  - The first letter of the first non-structure line gets drop cap styling
-- **Auto-focus**: Cursor automatically placed on first line when app loads
-- **Auto-advance**: Enter key and structure insertion automatically move to next line
-- **Overflow Handling**: Text automatically flows to the next line when it gets too long
+- **Lyric Writing Interface**: Clean, notebook-style writing environment
+- **MPC Beat Pads**: 8 programmable pads with default beats and custom audio upload
+- **Audio Upload**: Upload custom audio files to any MPC pad
+- **Rhyme Dictionary**: Built-in rhyming assistance
+- **AI Lyric Helper**: AI-powered lyric suggestions
+- **Song Structure Tools**: Pre-built song structure templates
+- **File Management**: Save, load, and export your projects
+- **Responsive Design**: Works on desktop and mobile devices
 
-### UI Components
-- **Header**: Contains MPC-style drum pad buttons and app title
-- **Toolbar**: Contains file operations and writing tools
-- **WritingBar**: Individual line editor with special formatting
-- **Suggestions**: Panel showing contextual suggestions
+## Recent Updates
 
-### Tools and Helpers
-- **Rhyme Dictionary**: Look up rhymes for words
-- **Ideas Panel**: Create and save writing ideas
-- **AI Helper**: Get AI-assisted writing suggestions
-- **Structure Dropdown**: Quick insertion of song structure elements
-- **File Operations**: New, Open, Save, Save As functionality
-
-## Technical Implementation Details
-
-### Key Components
-- **App.tsx**: Main application component and state management
-- **WritingBar.tsx**: Specialized text input with formatting and overflow handling
-- **Toolbar.tsx**: Tools and actions for the lyric writer
-- **Header.tsx**: App header with MPC buttons
-- **MPCButtons.tsx**: Drum pad buttons for beat creation
-
-### Special Features
-1. **Drop Cap Implementation**:
-   - Only appears on the first line of text
-   - Skip structure tags when determining drop cap
-   - Custom styling with orange color and larger font
-
-2. **Structure Tag Handling**:
-   - Bold styling for structure tags
-   - Auto-advance to next line after structure insertion
-   - Special handling to ensure proper cursor positioning
-
-3. **Text Overflow Algorithm**:
-   - Uses hidden measurement div to detect when text would overflow
-   - Binary search algorithm to find optimal split point
-   - Prefers splitting at word boundaries
-   - Automatically moves overflow text to next line
-
-4. **Keyboard Navigation**:
-   - Enter key to create new lines
-   - Tab key to advance to next line
-   - Down arrow to move to next line
-   - Auto-focus implementation for smooth writing experience
+- ✅ Fixed PowerShell execution policy issues
+- ✅ Removed red border and glow from me.png image
+- ✅ Added smooth sliding animation for me.png (slides in from right, slides out to right)
+- ✅ Integrated audio upload functionality
+- ✅ Added custom pad state management
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js (version 16 or higher)
+- npm or yarn
+
 ### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/your-repo-name.git
+cd your-repo-name
+```
+
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-### Running Development Server
+3. Start the development server:
 ```bash
 npm run dev
 ```
 
-### Building for Production
-```bash
-npm run build
-```
+4. Open your browser and navigate to `http://localhost:5173`
 
-### Preview Production Build
-```bash
-npm run preview
+## Usage
+
+### Writing Lyrics
+- Type in the main writing area
+- Use the toolbar for various functions
+- Save your work using the save button
+
+### Using MPC Pads
+- Click any of the 8 MPC pads to play default beats
+- Upload custom audio by clicking "Upload Audio" above the pads
+- Select a pad and upload your audio file
+- Choose between looped or one-shot playback
+
+### Audio Upload
+- Click "Upload Audio" above the MPC pads
+- Select an audio file (MP3, WAV, etc.)
+- Choose your preferred pad
+- Set playback mode (looped or one-shot)
+- Save to assign the audio to the selected pad
+
+## Project Structure
+
+```
+project/
+├── src/
+│   ├── components/          # React components
+│   ├── context/            # React context providers
+│   ├── hooks/              # Custom React hooks
+│   ├── utils/              # Utility functions
+│   └── App.tsx             # Main application component
+├── public/
+│   ├── assets/             # Static assets
+│   ├── sounds/             # Audio files
+│   └── fonts/              # Custom fonts
+└── package.json            # Dependencies and scripts
 ```
 
 ## Technologies Used
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Lucide React (icons) 
+
+- **React 18** - Frontend framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Styling
+- **Web Audio API** - Audio playback
+- **File API** - File upload handling
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+If you encounter any issues or have questions, please open an issue on GitHub.
+
+---
+
+**Note**: This project includes audio files and may require appropriate licensing for commercial use. 

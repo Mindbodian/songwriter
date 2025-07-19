@@ -156,6 +156,27 @@ export function Header({ charCount, wordCount, mpcPads, onPadAudioSave, activePa
   const activeSpeed = activePadIndex != null ? mpcPads[activePadIndex]?.speed ?? 1.0 : 1.0;
   const activePadId = activePadIndex != null ? mpcPads[activePadIndex]?.id : null;
 
+  const [pencilShaking, setPencilShaking] = useState(false);
+  const inactivityTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const resetInactivity = () => {
+      setPencilShaking(false);
+      if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
+      inactivityTimerRef.current = window.setTimeout(() => {
+        setPencilShaking(true);
+      }, 60000); // 1 minute
+    };
+    // List of events that count as activity
+    const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'];
+    events.forEach(event => window.addEventListener(event, resetInactivity));
+    resetInactivity(); // Start timer on mount
+    return () => {
+      if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
+      events.forEach(event => window.removeEventListener(event, resetInactivity));
+    };
+  }, []);
+
   return (
     <header className="relative border-b border-[#D4AF37]">
       {/* Background with slight gradient */}
@@ -178,7 +199,7 @@ export function Header({ charCount, wordCount, mpcPads, onPadAudioSave, activePa
         <div className="flex items-end" style={{ minHeight: 110 }}>
           {/* Left side: Rapper image */}
           <img
-            src={showRapper2 ? "/assets/rapper2.png" : "/assets/rapper%20-%20Copy.png"}
+            src={showRapper2 ? "/assets/rapper2.png" : "/assets/rapper - Copy.png"}
             alt="Rapper"
             style={{ height: 110, width: 'auto', marginRight: 16, marginLeft: -12, marginBottom: -8, position: 'relative', zIndex: 30, alignSelf: 'flex-end' }}
             className="block"
@@ -237,6 +258,7 @@ export function Header({ charCount, wordCount, mpcPads, onPadAudioSave, activePa
           transform: 'rotate(-18deg)',
           filter: 'drop-shadow(8px 8px 4px rgba(0, 0, 0, 0.5))'
         }}
+        className={pencilShaking ? 'pencil-shake' : ''}
       />
       <AudioUploadModal
         isOpen={isModalOpen}

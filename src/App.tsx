@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Toolbar } from './components/Toolbar';
 import { WritingBar, WritingBarRef } from './components/WritingBar';
 import { RhymeDictionary } from './components/RhymeDictionary';
-import { IdeasPanel } from './components/IdeasPanel';
+import { IdeasPage } from './components/IdeasPage';
 import { Header } from './components/Header';
 import { SaveModal } from './components/SaveModal';
 import { Suggestions } from './components/Suggestions';
@@ -14,6 +14,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PlatformerGame from './components/PlatformerGame';
 import { AudioProvider } from './context/AudioContext';
 import { ParentalAdvisoryWarning } from './components/ParentalAdvisoryWarning';
+import { LoginScreen } from './components/LoginScreen';
 
 /**
  * Main Application Component for Mindbodian Soulman Lyric Writer
@@ -43,10 +44,11 @@ export interface MPCPad {
 }
 
 export function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [bars, setBars] = useState<string[]>(Array(25).fill(''));
   const [currentBarIndex, setCurrentBarIndex] = useState(0);
   const [showRhymeDictionary, setShowRhymeDictionary] = useState(false);
-  const [showIdeasPanel, setShowIdeasPanel] = useState(false);
+  const [showIdeasPage, setShowIdeasPage] = useState(false);
   const [showAIHelper, setShowAIHelper] = useState(false);
   const [lastWord, setLastWord] = useState('');
   const [panelWidth, setPanelWidth] = useState(256);
@@ -62,6 +64,7 @@ export function App() {
   const [suggestionHistory, setSuggestionHistory] = useState<Set<string>>(new Set());
   const [hasPlayedToasty, setHasPlayedToasty] = useState(false);
   const [showToastyImage, setShowToastyImage] = useState(false);
+  const hasTriggeredToastyRef = useRef(false);
   const [mpcPads, setMpcPads] = useState<MPCPad[]>(
     Array.from({ length: 8 }, (_, i) => ({ id: i + 1, audioUrl: null, isLooping: true, speed: 1.0 }))
   );
@@ -80,7 +83,47 @@ export function App() {
     handleSaveAs,
     handleSaveConfirm,
     handleCopyLyrics,
-  } = useFileHandlers(bars, setBars, setCurrentBarIndex);
+  } = useFileHandlers(bars, setBars, setCurrentBarIndex, () => {
+    setHasPlayedToasty(false);
+    hasTriggeredToastyRef.current = false;
+  });
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handleInsertMultipleStructures = (structures: string[]) => {
+    const newBars = [...bars];
+    // Insert the multiple structures at the current line
+    newBars[currentBarIndex] = structures[0]; // Take the first (and only) structure line
+    
+    // Always ensure there's an empty line after the structure
+    if (currentBarIndex === newBars.length - 1) {
+      newBars.push('');
+    } else if (newBars[currentBarIndex + 1] === '') {
+      // Next line is already empty, no need to add a new one
+    } else {
+      // Insert a new empty line after the structure
+      newBars.splice(currentBarIndex + 1, 0, '');
+    }
+    
+    // Update the state with the new bars first
+    setBars(newBars);
+    playSound('type');
+    
+    // Use setTimeout to ensure state is updated before changing focus
+    setTimeout(() => {
+      // Move to the next line
+      setCurrentBarIndex(currentBarIndex + 1);
+      
+      // Give the UI time to update, then focus on the new line
+      setTimeout(() => {
+        if (currentBarRef.current) {
+          currentBarRef.current.focus();
+        }
+      }, 50);
+    }, 10);
+  };
 
   // Auto-focus the first line when the page loads
   useEffect(() => {
@@ -132,26 +175,50 @@ export function App() {
   // Detect bad words in any bar
   useEffect(() => {
     const allText = bars.join(' ').toLowerCase();
+    console.log('Checking for curse words in:', allText);
     const found = BAD_WORDS.some(word => allText.includes(word));
+    console.log('Curse word found:', found);
+    
+    // Always show/hide parental advisory based on curse words
     if (found) {
+      console.log('CURSE WORD DETECTED! Showing parental advisory...');
       if (!showAdvisory) {
         setAdvisoryAnimate(true);
       }
       setShowAdvisory(true);
-      if (!hasPlayedToasty) {
-        playSound('toasty');
+      
+      // Only trigger Toasty effect on the FIRST curse word
+      if (!hasPlayedToasty && !hasTriggeredToastyRef.current) {
+        console.log('FIRST curse word! Playing Toasty sound and showing image');
+        
+        // Mark that we've triggered Toasty immediately to prevent re-triggering
+        hasTriggeredToastyRef.current = true;
         setHasPlayedToasty(true);
+        
+        // Force the image to show immediately
+        setShowToastyImage(true);
+        console.log('Toasty image state set to true');
+        
+        // Try to play sound
+        try {
+          playSound('toasty');
+          console.log('Toasty sound triggered');
+        } catch (error) {
+          console.error('Error playing Toasty sound:', error);
+        }
+        
         setTimeout(() => {
-          setShowToastyImage(true);
-          setTimeout(() => setShowToastyImage(false), 1000); // Show for 1 second
-        }, 200); // Delay by 0.2 seconds
+          setShowToastyImage(false);
+          console.log('Toasty image hidden');
+        }, 3000); // Show for 3 seconds for testing
       }
     } else {
       setShowAdvisory(false);
       setAdvisoryAnimate(false);
-      setHasPlayedToasty(false);
     }
-  }, [bars]);
+  }, [bars, hasPlayedToasty]);
+
+  // Additional detection for immediate response - REMOVED to prevent multiple triggers
 
   // After animation, stop animating but keep badge
   const handleAdvisoryAnimationEnd = () => {
@@ -189,31 +256,6 @@ export function App() {
    */
   const handleBarChange = (content: string) => {
     const newBars = [...bars];
-    const isStructureLine = newBars[currentBarIndex].trim().startsWith('[') && newBars[currentBarIndex].includes(']');
-    if (isStructureLine && content.trim() !== newBars[currentBarIndex].trim()) {
-      // Only move if user is typing something other than the structure tag
-      const structure = newBars[currentBarIndex];
-      const typed = content.replace(structure, '').trim();
-      if (typed.length > 0) {
-        // Move typed content to the next line, but do not erase the structure line
-        if (currentBarIndex === newBars.length - 1) {
-          newBars.push(typed);
-        } else if (newBars[currentBarIndex + 1].trim() === '') {
-          newBars[currentBarIndex + 1] = typed;
-        } else {
-          newBars[currentBarIndex + 1] += ' ' + typed;
-        }
-        // Do NOT change the structure line
-        setBars(newBars);
-        setCurrentBarIndex(currentBarIndex + 1);
-        setTimeout(() => {
-          if (currentBarRef.current) {
-            currentBarRef.current.focus();
-          }
-        }, 0);
-        return;
-      }
-    }
     newBars[currentBarIndex] = content;
     setBars(newBars);
 
@@ -393,6 +435,11 @@ export function App() {
     setMpcPads(prev => prev.map(pad => pad.id === padId ? { ...pad, speed } : pad));
   };
 
+  // Show login screen if not authenticated
+  if (!isAuthenticated) {
+    return <LoginScreen onLogin={handleLogin} />;
+  }
+
   return (
     <AudioProvider>
       <div className="relative min-h-screen">
@@ -419,12 +466,15 @@ export function App() {
                   onSave={handleSave}
                   onSaveAs={handleShowSaveModal}
                   onRhymeDictionary={() => setShowRhymeDictionary(true)}
-                  onIdeas={() => setShowIdeasPanel(true)}
+                  onIdeas={() => setShowIdeasPage(true)}
                   onCopyLyrics={handleCopyLyrics}
                   onInsertStructure={handleInsertStructure}
                   onAIHelper={() => setShowAIHelper(true)}
                   onPrintLyrics={handlePrintLyrics}
+                  onInsertMultipleStructures={handleInsertMultipleStructures}
                 />
+
+
 
                 <div className="flex-1 flex overflow-hidden">
                   <div className="flex-1 overflow-y-auto p-4">
@@ -500,15 +550,8 @@ export function App() {
                   />
                 )}
 
-                {showIdeasPanel && (
-                  <IdeasPanel
-                    onClose={() => setShowIdeasPanel(false)}
-                    onImportLine={(line) => {
-                      handleBarChange(line);
-                      handleEnterKey();
-                    }}
-                    currentLineIndex={currentBarIndex}
-                  />
+                {showIdeasPage && (
+                  <IdeasPage onClose={() => setShowIdeasPage(false)} />
                 )}
 
                 {showSaveModal && (
@@ -531,23 +574,23 @@ export function App() {
                   />
                 )}
 
-                {showToastyImage && (
-                  <img
-                    src="/assets/toasty.png"
-                    alt="Toasty!"
-                    style={{
-                      position: 'fixed',
-                      right: 24,
-                      bottom: 24,
-                      width: 120,
-                      height: 'auto',
-                      zIndex: 9999,
-                      pointerEvents: 'none',
-                      transition: 'opacity 0.3s',
-                      opacity: showToastyImage ? 1 : 0,
-                    }}
-                  />
-                )}
+                <img
+                  src="/assets/me.png"
+                  alt="Toasty!"
+                  style={{
+                    position: 'fixed',
+                    right: showToastyImage ? 24 : -150,
+                    bottom: 24,
+                    width: 120,
+                    height: 'auto',
+                    zIndex: 9999,
+                    pointerEvents: 'none',
+                    opacity: showToastyImage ? 1 : 0,
+                    transition: 'right 0.5s ease-in-out, opacity 0.5s ease-in-out',
+                  }}
+                  onLoad={() => console.log('Toasty image loaded successfully')}
+                  onError={(e) => console.error('Toasty image failed to load:', e)}
+                />
               </div>
             } />
           </Routes>

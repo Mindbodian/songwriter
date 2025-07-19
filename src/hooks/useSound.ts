@@ -24,7 +24,7 @@ export function useSound() {
   const initToastyAudio = () => {
     if (!toastyAudioRef.current) {
       toastyAudioRef.current = new Audio('/sounds/Toasty - Sound Effect (HD).mp3');
-      toastyAudioRef.current.volume = 0.7;
+      toastyAudioRef.current.volume = 1.0;
     }
     return toastyAudioRef.current;
   };

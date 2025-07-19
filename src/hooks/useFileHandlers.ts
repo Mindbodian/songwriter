@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { handleFileOpen, handleFileSave, handleCopyToClipboard } from '../utils/fileHandlers';
 import { generateSongNameSuggestions } from '../utils/songNameSuggestions';
 
-export function useFileHandlers(bars: string[], setBars: (bars: string[]) => void, setCurrentBarIndex: (index: number) => void) {
+export function useFileHandlers(bars: string[], setBars: (bars: string[]) => void, setCurrentBarIndex: (index: number) => void, resetToasty?: () => void) {
   const [fileName, setFileName] = useState('Song 1');
   const [showSaveModal, setShowSaveModal] = useState(false);
 
@@ -16,6 +16,10 @@ export function useFileHandlers(bars: string[], setBars: (bars: string[]) => voi
         num++;
       }
       setFileName(`Song ${num}`);
+      // Reset Toasty state for new document
+      if (resetToasty) {
+        resetToasty();
+      }
     }
   };
 

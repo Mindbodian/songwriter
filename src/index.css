@@ -58,6 +58,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Remove aggressive zoom/font-size rules. Let browser handle scaling. */
+
+body {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  overflow-x: hidden;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Prevent zoom on input focus */
+input, textarea, select {
+  font-size: 16px !important;
+  -webkit-text-size-adjust: 100% !important;
+  -ms-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+  touch-action: manipulation !important;
+  -webkit-touch-callout: none !important;
+}
+
+/* Additional zoom prevention for all elements */
+* {
+  -webkit-text-size-adjust: 100% !important;
+  -ms-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+}
+
+/* Force consistent base font size across browsers */
+html, body {
+  line-height: 1.5 !important;
+}
+
+/* Ensure consistent rem units */
+:root {
+  font-size: 16px !important;
+}
+
+/* Ensure root element maintains consistent sizing */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
 :root {
   --primary-color: #D4AF37;     /* Golden color */
   --secondary-color: #66a6ff;   /* Blue line color */
@@ -248,6 +295,7 @@
   margin: 0 auto;
   width: 100%;
   max-width: 800px;
+  box-sizing: border-box;
   pointer-events: none;
 }
 
@@ -479,4 +527,22 @@ input[type="range"]::-moz-range-thumb {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+}
+
+@keyframes pencilShake {
+  0% { transform: rotate(-18deg) translateX(0) translateY(0); }
+  10% { transform: rotate(-18deg) translateX(-6px) translateY(-2px); }
+  20% { transform: rotate(-18deg) translateX(5px) translateY(2px); }
+  30% { transform: rotate(-18deg) translateX(-4px) translateY(-1px); }
+  40% { transform: rotate(-18deg) translateX(4px) translateY(2px); }
+  50% { transform: rotate(-18deg) translateX(-3px) translateY(-2px); }
+  60% { transform: rotate(-18deg) translateX(3px) translateY(1px); }
+  70% { transform: rotate(-18deg) translateX(-2px) translateY(-2px); }
+  80% { transform: rotate(-18deg) translateX(2px) translateY(2px); }
+  90% { transform: rotate(-18deg) translateX(-1px) translateY(-1px); }
+  100% { transform: rotate(-18deg) translateX(0) translateY(0); }
+}
+
+.pencil-shake {
+  animation: pencilShake 0.7s cubic-bezier(.36,.07,.19,.97) both infinite;
 }

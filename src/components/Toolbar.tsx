@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Save, FilePlus, Download, BookOpen, Lightbulb, FolderOpen, Copy, ChevronDown, Printer } from 'lucide-react';
+import { Save, FilePlus, Download, BookOpen, Lightbulb, FolderOpen, Copy, ChevronDown, Printer, Layers } from 'lucide-react';
+import { MultiStructureSelector } from './MultiStructureSelector';
 
 export interface ToolbarProps {
   fileName: string;
@@ -14,6 +15,7 @@ export interface ToolbarProps {
   onInsertStructure: (structure: string) => void;
   onAIHelper: () => void;
   onFileNameChange?: (newName: string) => void;
+  onInsertMultipleStructures?: (structures: string[]) => void;
 }
 
 const songStructureOptions = [
@@ -38,15 +40,24 @@ export function Toolbar({
   onPrintLyrics,
   onInsertStructure,
   onAIHelper,
-  onFileNameChange
+  onFileNameChange,
+  onInsertMultipleStructures
 }: ToolbarProps) {
   const [isStructureOpen, setIsStructureOpen] = useState(false);
+  const [isMultiStructureOpen, setIsMultiStructureOpen] = useState(false);
   const [isEditingFileName, setIsEditingFileName] = useState(false);
   const [editedFileName, setEditedFileName] = useState(fileName);
 
   const handleStructureSelect = (structure: string) => {
     onInsertStructure(structure);
     setIsStructureOpen(false);
+  };
+
+  const handleMultipleStructuresConfirm = (structures: string[]) => {
+    if (onInsertMultipleStructures) {
+      onInsertMultipleStructures(structures);
+    }
+    setIsMultiStructureOpen(false);
   };
 
   const handleFileNameClick = () => {
@@ -81,7 +92,7 @@ export function Toolbar({
       <div className="p-3 flex items-center gap-3 flex-wrap">
         <button
           onClick={onNew}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
         >
           <FilePlus size={14} />
           <span>New</span>
@@ -97,21 +108,21 @@ export function Toolbar({
             };
             input.click();
           }}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
         >
           <FolderOpen size={14} />
           <span>Open</span>
         </button>
         <button
           onClick={onSave}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
         >
           <Save size={14} />
           <span>Save</span>
         </button>
         <button
           onClick={onSaveAs}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
         >
           <Download size={14} />
           <span>Save As</span>
@@ -121,21 +132,21 @@ export function Toolbar({
 
         <button
           onClick={onRhymeDictionary}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
         >
           <BookOpen size={14} />
           <span>Rhymes</span>
         </button>
         <button
           onClick={onIdeas}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
         >
           <Lightbulb size={14} />
           <span>Ideas</span>
         </button>
         <button
           onClick={onAIHelper}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
         >
           <span className="text-amber-400">✨</span>
           <span>AI Helper</span>
@@ -145,7 +156,7 @@ export function Toolbar({
 
         <button
           onClick={onCopyLyrics}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
         >
           <Copy size={14} />
           <span>Copy</span>
@@ -153,7 +164,7 @@ export function Toolbar({
         
         <button
           onClick={onPrintLyrics}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
         >
           <Printer size={14} />
           <span>Print</span>
@@ -162,7 +173,7 @@ export function Toolbar({
         <div className="relative inline-block">
           <button 
             onClick={() => setIsStructureOpen(!isStructureOpen)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-gray-400 hover:text-amber-400 active:translate-y-0.5"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
           >
             <ChevronDown size={14} />
             <span>Structure</span>
@@ -182,6 +193,14 @@ export function Toolbar({
             </div>
           )}
         </div>
+
+        <button
+          onClick={() => setIsMultiStructureOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
+        >
+          <Layers size={14} />
+          <span>Multi-Structure</span>
+        </button>
 
         <div className="flex-1" />
         
@@ -205,6 +224,12 @@ export function Toolbar({
           </span>
         )}
       </div>
+
+      <MultiStructureSelector
+        isOpen={isMultiStructureOpen}
+        onClose={() => setIsMultiStructureOpen(false)}
+        onConfirm={handleMultipleStructuresConfirm}
+      />
     </div>
   );
 }

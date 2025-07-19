@@ -73,9 +73,8 @@ export const WritingBar = forwardRef<WritingBarRef, WritingBarProps>(({
   // Check if content starts with a structure tag like [Verse]
   const isStructureTag = content.trim().startsWith('[') && content.includes(']');
   
-  // Only use drop cap on the very first line (index === 0) that isn't a structure tag
-  const hasContent = content.trim().length > 0;
-  const shouldHaveDropCap = !isStructureTag && hasContent && (index === 0);
+  // Remove drop cap functionality - always false
+  const shouldHaveDropCap = false;
   const firstChar = content.charAt(0);
   const restOfContent = content.substring(1);
 

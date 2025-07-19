@@ -1,5 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useAudio } from '../context/AudioContext';
+import React, { useRef, useState, useEffect } from 'react';import { useAudio } from '../context/AudioContext';
 import type { MPCPad } from '../App';
 
 interface MPCButtonsProps {
@@ -24,9 +23,19 @@ export function MPCButtons({ mpcPads, activePadIndex, setActivePadIndex }: MPCBu
   // Helper to get audio src and loop for each pad
   const getPadAudio = (index: number) => {
     const pad = mpcPads[index];
+    
+    // If user uploaded audio, respect their loop setting
+    if (pad && pad.audioUrl) {
+      return {
+        src: pad.audioUrl,
+        loop: pad.isLooping
+      };
+    }
+    
+    // For default beats, assume they should loop (original behavior)
     return {
-      src: pad && pad.audioUrl ? pad.audioUrl : audioFiles[index],
-      loop: pad && pad.audioUrl ? pad.isLooping : true
+      src: audioFiles[index],
+      loop: true
     };
   };
 
@@ -34,11 +43,20 @@ export function MPCButtons({ mpcPads, activePadIndex, setActivePadIndex }: MPCBu
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
   const handleButtonClick = (index: number) => {
+    console.log('MPC button clicked:', index, 'beat:', beatLabels[index]);
     setActivePadIndex(index);
+    
+    // Ensure audio context is resumed on user interaction
     if (audioContext && audioContext.state === 'suspended') {
-      audioContext.resume();
+      audioContext.resume().then(() => {
+        console.log('Audio context resumed');
+      }).catch(e => {
+        console.error('Failed to resume audio context:', e);
+      });
     }
+    
     if (activeIndex === index) {
+      console.log('Stopping audio for pad:', index);
       const audio = audioRefs.current[index];
       if (audio) {
         audio.pause();
@@ -49,28 +67,38 @@ export function MPCButtons({ mpcPads, activePadIndex, setActivePadIndex }: MPCBu
       registerAudioElement(null, undefined);
       return;
     }
+    
     if (activeIndex !== null && audioRefs.current[activeIndex]) {
       const prevAudio = audioRefs.current[activeIndex];
       prevAudio?.pause();
       prevAudio && (prevAudio.currentTime = 0);
     }
+    
     const audio = audioRefs.current[index];
+    console.log('Audio element for index', index, ':', audio);
     if (audio) {
+      console.log('Playing audio for pad:', index, 'src:', audio.src, 'duration:', audio.duration);
       audio.currentTime = 0;
       const { loop } = getPadAudio(index);
       audio.loop = loop;
+      console.log('Setting loop to:', loop);
       // Set playback rate from pad speed
       audio.playbackRate = mpcPads[index]?.speed ?? 1.0;
-      audio.play().catch(e => {
-        console.error('Error playing audio:', e);
+      
+      audio.play().then(() => {
+        console.log('Audio started playing successfully for pad:', index);
+        setActiveIndex(index);
+        setIsPlaying(true);
+        registerAudioElement(audio, index);
+      }).catch(e => {
+        console.error('Error playing audio for pad', index, ':', e);
         alert(`Could not play ${beatLabels[index]}. Please add the file: public${audioFiles[index]}`);
       });
-      setActiveIndex(index);
-      setIsPlaying(true);
-      registerAudioElement(audio, index);
+      
       if (!loop) {
         // If not looping, clear active state when playback ends
         audio.onended = () => {
+          console.log('Audio ended for pad:', index);
           setActiveIndex(null);
           setIsPlaying(false);
           registerAudioElement(null, undefined);
@@ -78,6 +106,8 @@ export function MPCButtons({ mpcPads, activePadIndex, setActivePadIndex }: MPCBu
       } else {
         audio.onended = null;
       }
+    } else {
+      console.error('Audio element not found for index:', index);
     }
   };
 
