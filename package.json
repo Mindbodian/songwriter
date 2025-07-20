@@ -1,28 +1,10 @@
 {
-<<<<<<< HEAD
-  "name": "react-audio-sampler-pad",
-=======
   "name": "vite-react-typescript-starter",
->>>>>>> 543fbafb29d30ce3fa4ccadafe813da237790c02
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-<<<<<<< HEAD
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "lucide-react": "^0.525.0"
-  },
-  "devDependencies": {
-    "@types/node": "^22.14.0",
-    "typescript": "~5.7.2",
-    "vite": "^6.2.0"
-=======
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -47,6 +29,5 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.1.5"
->>>>>>> 543fbafb29d30ce3fa4ccadafe813da237790c02
   }
 }
