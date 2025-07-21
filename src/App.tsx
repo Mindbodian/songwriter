@@ -15,6 +15,9 @@ import PlatformerGame from './components/PlatformerGame';
 import { AudioProvider } from './context/AudioContext';
 import { ParentalAdvisoryWarning } from './components/ParentalAdvisoryWarning';
 import { LoginScreen } from './components/LoginScreen';
+import WelcomeScreen from './components/WelcomeScreen';
+import BarsSplash from './components/BarsSplash';
+import ChatbotWidget from './components/ChatbotWidget';
 
 /**
  * Main Application Component for Mindbodian Soulman Lyric Writer
@@ -44,7 +47,8 @@ export interface MPCPad {
 }
 
 export function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [showBarsSplash, setShowBarsSplash] = useState(false);
   const [bars, setBars] = useState<string[]>(Array(25).fill(''));
   const [currentBarIndex, setCurrentBarIndex] = useState(0);
   const [showRhymeDictionary, setShowRhymeDictionary] = useState(false);
@@ -88,9 +92,7 @@ export function App() {
     hasTriggeredToastyRef.current = false;
   });
 
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  };
+  // Remove login logic
 
   const handleInsertMultipleStructures = (structures: string[]) => {
     const newBars = [...bars];
@@ -166,6 +168,15 @@ export function App() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // After welcome video, show BarsSplash
+  useEffect(() => {
+    if (!showWelcome) {
+      setShowBarsSplash(true);
+      const timer = setTimeout(() => setShowBarsSplash(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showWelcome]);
 
   // Standard mild bad word list
   const BAD_WORDS = [
@@ -435,167 +446,178 @@ export function App() {
     setMpcPads(prev => prev.map(pad => pad.id === padId ? { ...pad, speed } : pad));
   };
 
-  // Show login screen if not authenticated
-  if (!isAuthenticated) {
-    return <LoginScreen onLogin={handleLogin} />;
+  // Test animation function
+  const handleTestAnimation = () => {
+    setShowToastyImage(true);
+    setTimeout(() => {
+      setShowToastyImage(false);
+    }, 3000);
+  };
+
+  if (showWelcome) {
+    return <WelcomeScreen onFinish={() => setShowWelcome(false)} />;
   }
 
   return (
-    <AudioProvider>
-      <div className="relative min-h-screen">
-        <Router>
-          <Routes>
-            <Route path="/game" element={<PlatformerGame />} />
-            <Route path="/" element={
-              <div className="min-h-screen bg-gray-900 flex flex-col">
-                <Header
-                  charCount={charCount}
-                  wordCount={wordCount}
-                  mpcPads={mpcPads}
-                  onPadAudioSave={handlePadAudioSave}
-                  activePadIndex={activePadIndex}
-                  setActivePadIndex={setActivePadIndex}
-                  onPadSpeedChange={handlePadSpeedChange}
-                />
-                <ParentalAdvisoryWarning show={showAdvisory} animate={advisoryAnimate} onAnimationEnd={handleAdvisoryAnimationEnd} />
-                
-                <Toolbar
-                  fileName={fileName}
-                  onNew={handleNew}
-                  onOpen={handleOpen}
-                  onSave={handleSave}
-                  onSaveAs={handleShowSaveModal}
-                  onRhymeDictionary={() => setShowRhymeDictionary(true)}
-                  onIdeas={() => setShowIdeasPage(true)}
-                  onCopyLyrics={handleCopyLyrics}
-                  onInsertStructure={handleInsertStructure}
-                  onAIHelper={() => setShowAIHelper(true)}
-                  onPrintLyrics={handlePrintLyrics}
-                  onInsertMultipleStructures={handleInsertMultipleStructures}
-                />
+    <>
+      {showBarsSplash && <BarsSplash onFinish={() => setShowBarsSplash(false)} />}
+      <AudioProvider>
+        <div className="relative min-h-screen">
+          <Router>
+            <Routes>
+              <Route path="/game" element={<PlatformerGame />} />
+              <Route path="/" element={
+                <div className="min-h-screen bg-gray-900 flex flex-col">
+                  <Header
+                    charCount={charCount}
+                    wordCount={wordCount}
+                    mpcPads={mpcPads}
+                    onPadAudioSave={handlePadAudioSave}
+                    activePadIndex={activePadIndex}
+                    setActivePadIndex={setActivePadIndex}
+                    onPadSpeedChange={handlePadSpeedChange}
+                  />
+                  <ParentalAdvisoryWarning show={showAdvisory} animate={advisoryAnimate} onAnimationEnd={handleAdvisoryAnimationEnd} />
+                  <Toolbar
+                    fileName={fileName}
+                    onNew={handleNew}
+                    onOpen={handleOpen}
+                    onSave={handleSave}
+                    onSaveAs={handleShowSaveModal}
+                    onRhymeDictionary={() => setShowRhymeDictionary(true)}
+                    onIdeas={() => setShowIdeasPage(true)}
+                    onCopyLyrics={handleCopyLyrics}
+                    onInsertStructure={handleInsertStructure}
+                    onAIHelper={() => setShowAIHelper(true)}
+                    onPrintLyrics={handlePrintLyrics}
+                    onInsertMultipleStructures={handleInsertMultipleStructures}
+                    onTestAnimation={handleTestAnimation}
+                  />
 
 
 
-                <div className="flex-1 flex overflow-hidden">
-                  <div className="flex-1 overflow-y-auto p-4">
-                    <div className="notebook-background">
-                      <div className="w-full">
-                        {bars.map((content, index) => {
-                          // Determine if previous line is a structure
-                          const prevLineIsStructure = index > 0 && 
-                            bars[index-1].trim().startsWith('[') && 
-                            bars[index-1].includes(']');
-                            
-                          return (
-                            <WritingBar
-                              key={index}
-                              ref={index === currentBarIndex ? currentBarRef : null}
-                              content={content}
-                              onChange={(newContent) => {
-                                if (index === currentBarIndex) {
-                                  handleBarChange(newContent);
-                                }
-                              }}
-                              onEnter={handleEnterKey}
-                              isFocused={index === currentBarIndex}
-                              onFocus={() => setCurrentBarIndex(index)}
-                              index={index}
-                              isStructureLine={content.trim().startsWith('[') && content.includes(']')}
-                              prevLineIsStructure={prevLineIsStructure}
-                              onTextOverflow={(overflowText, overflowIndex) => {
-                                // Handle text overflow by moving text to the next line
-                                const newBars = [...bars];
-                                
-                                // If we're at the last line, add a new one
-                                if (overflowIndex === newBars.length - 1) {
-                                  newBars.push(overflowText);
-                                } else {
-                                  // Otherwise, insert the overflow text at the beginning of next line
-                                  newBars[overflowIndex + 1] = overflowText + newBars[overflowIndex + 1];
-                                }
-                                
-                                setBars(newBars);
-                              }}
-                            />
-                          );
-                        })}
+                  <div className="flex-1 flex overflow-hidden">
+                    <div className="flex-1 overflow-y-auto p-4">
+                      <div className="notebook-background">
+                        <div className="w-full">
+                          {bars.map((content, index) => {
+                            // Determine if previous line is a structure
+                            const prevLineIsStructure = index > 0 && 
+                              bars[index-1].trim().startsWith('[') && 
+                              bars[index-1].includes(']');
+                              
+                            return (
+                              <WritingBar
+                                key={index}
+                                ref={index === currentBarIndex ? currentBarRef : null}
+                                content={content}
+                                onChange={(newContent) => {
+                                  if (index === currentBarIndex) {
+                                    handleBarChange(newContent);
+                                  }
+                                }}
+                                onEnter={handleEnterKey}
+                                isFocused={index === currentBarIndex}
+                                onFocus={() => setCurrentBarIndex(index)}
+                                index={index}
+                                isStructureLine={content.trim().startsWith('[') && content.includes(']')}
+                                prevLineIsStructure={prevLineIsStructure}
+                                onTextOverflow={(overflowText, overflowIndex) => {
+                                  // Handle text overflow by moving text to the next line
+                                  const newBars = [...bars];
+                                  
+                                  // If we're at the last line, add a new one
+                                  if (overflowIndex === newBars.length - 1) {
+                                    newBars.push(overflowText);
+                                  } else {
+                                    // Otherwise, insert the overflow text at the beginning of next line
+                                    newBars[overflowIndex + 1] = overflowText + newBars[overflowIndex + 1];
+                                  }
+                                  
+                                  setBars(newBars);
+                                }}
+                              />
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div 
+                      style={{ width: `${panelWidth}px` }}
+                      className="flex-none bg-gray-800 relative"
+                    >
+                      <div
+                        className="absolute left-0 top-0 w-1 h-full cursor-ew-resize hover:bg-orange-500 transition-colors"
+                        onMouseDown={startResize}
+                      />
+                      <div className="h-full border-l border-gray-700">
+                        <Suggestions
+                          lastWord={lastWord}
+                          savedLines={getAllSavedLines()}
+                          onSelect={handleSuggestionSelect}
+                          onClose={() => {}}
+                        />
                       </div>
                     </div>
                   </div>
 
-                  <div 
-                    style={{ width: `${panelWidth}px` }}
-                    className="flex-none bg-gray-800 relative"
-                  >
-                    <div
-                      className="absolute left-0 top-0 w-1 h-full cursor-ew-resize hover:bg-orange-500 transition-colors"
-                      onMouseDown={startResize}
+                  {showRhymeDictionary && (
+                    <RhymeDictionary
+                      isOpen={showRhymeDictionary}
+                      onClose={() => setShowRhymeDictionary(false)}
+                      initialWord={lastWord}
                     />
-                    <div className="h-full border-l border-gray-700">
-                      <Suggestions
-                        lastWord={lastWord}
-                        savedLines={getAllSavedLines()}
-                        onSelect={handleSuggestionSelect}
-                        onClose={() => {}}
-                      />
-                    </div>
-                  </div>
+                  )}
+
+                  {showIdeasPage && (
+                    <IdeasPage onClose={() => setShowIdeasPage(false)} />
+                  )}
+
+                  {showSaveModal && (
+                    <SaveModal
+                      isOpen={showSaveModal}
+                      onClose={() => setShowSaveModal(false)}
+                      onSave={handleSaveConfirm}
+                      currentFileName={fileName}
+                      suggestions={saveModalSuggestions}
+                      onRequestMoreSuggestions={handleMoreSuggestions}
+                    />
+                  )}
+
+                  {showAIHelper && (
+                    <AILyricHelper
+                      isOpen={showAIHelper}
+                      onClose={() => setShowAIHelper(false)}
+                      lastWord={lastWord}
+                      onSelect={handleSuggestionSelect}
+                    />
+                  )}
+
+                  <img
+                    src="/assets/me.png"
+                    alt="Toasty!"
+                    style={{
+                      position: 'fixed',
+                      right: showToastyImage ? 24 : -150,
+                      bottom: 24,
+                      width: 120,
+                      height: 'auto',
+                      zIndex: 9999,
+                      pointerEvents: 'none',
+                      opacity: showToastyImage ? 1 : 0,
+                      transition: 'right 0.5s ease-in-out, opacity 0.5s ease-in-out',
+                    }}
+                    onLoad={() => console.log('Toasty image loaded successfully')}
+                    onError={(e) => console.error('Toasty image failed to load:', e)}
+                  />
                 </div>
-
-                {showRhymeDictionary && (
-                  <RhymeDictionary
-                    isOpen={showRhymeDictionary}
-                    onClose={() => setShowRhymeDictionary(false)}
-                    initialWord={lastWord}
-                  />
-                )}
-
-                {showIdeasPage && (
-                  <IdeasPage onClose={() => setShowIdeasPage(false)} />
-                )}
-
-                {showSaveModal && (
-                  <SaveModal
-                    isOpen={showSaveModal}
-                    onClose={() => setShowSaveModal(false)}
-                    onSave={handleSaveConfirm}
-                    currentFileName={fileName}
-                    suggestions={saveModalSuggestions}
-                    onRequestMoreSuggestions={handleMoreSuggestions}
-                  />
-                )}
-
-                {showAIHelper && (
-                  <AILyricHelper
-                    isOpen={showAIHelper}
-                    onClose={() => setShowAIHelper(false)}
-                    lastWord={lastWord}
-                    onSelect={handleSuggestionSelect}
-                  />
-                )}
-
-                <img
-                  src="/assets/me.png"
-                  alt="Toasty!"
-                  style={{
-                    position: 'fixed',
-                    right: showToastyImage ? 24 : -150,
-                    bottom: 24,
-                    width: 120,
-                    height: 'auto',
-                    zIndex: 9999,
-                    pointerEvents: 'none',
-                    opacity: showToastyImage ? 1 : 0,
-                    transition: 'right 0.5s ease-in-out, opacity 0.5s ease-in-out',
-                  }}
-                  onLoad={() => console.log('Toasty image loaded successfully')}
-                  onError={(e) => console.error('Toasty image failed to load:', e)}
-                />
-              </div>
-            } />
-          </Routes>
-        </Router>
-      </div>
-    </AudioProvider>
+              } />
+            </Routes>
+          </Router>
+        </div>
+      </AudioProvider>
+      <ChatbotWidget />
+    </>
   );
 }

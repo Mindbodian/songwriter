@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 450" width="170" height="450">
+  <!-- Pencil body - flipped with readable text -->
+  <g transform="rotate(258, 85, 225)">
+    <!-- Wooden body -->
+    <rect x="30" y="220" width="280" height="16" fill="#FFCB6B" rx="2" ry="2"/>
+    
+    <!-- Pencil tip -->
+    <polygon points="5,228 30,220 30,236" fill="#454545"/>
+    
+    <!-- Eraser end -->
+    <rect x="310" y="220" width="16" height="16" fill="#F48FB1" rx="2" ry="2"/>
+    
+    <!-- Metal band -->
+    <rect x="290" y="220" width="20" height="16" fill="#90A4AE" rx="1" ry="1"/>
+    
+    <!-- Green stripes -->
+    <rect x="270" y="220" width="8" height="16" fill="#66BB6A"/>
+    <rect x="255" y="220" width="8" height="16" fill="#66BB6A"/>
+    
+    <!-- Text on pencil -->
+    <text font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#372717" text-anchor="middle" x="150" y="228">
+      Mastermind a Masterpiece
+    </text>
+  </g>
+</svg> 

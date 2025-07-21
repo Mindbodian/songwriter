@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="800" height="200">
+  <defs>
+    <pattern id="networkPattern" patternUnits="userSpaceOnUse" width="100" height="100">
+      <!-- Black background -->
+      <rect width="100" height="100" fill="black" />
+      
+      <!-- Network of intersecting lines - scaled down -->
+      <!-- Thicker lines -->
+      <path d="M0,10 L25,40 L60,20 L100,30" stroke="white" stroke-width="1.5" fill="none" />
+      <path d="M5,50 L40,70 L75,45 L100,60" stroke="white" stroke-width="2" fill="none" />
+      <path d="M0,75 L30,50 L70,90 L90,75" stroke="white" stroke-width="1.5" fill="none" />
+      <path d="M50,0 L60,30 L40,60 L20,100" stroke="white" stroke-width="2" fill="none" />
+      <path d="M90,0 L80,25 L100,50" stroke="white" stroke-width="1.5" fill="none" />
+      <path d="M0,90 L30,80 L60,100" stroke="white" stroke-width="1.5" fill="none" />
+      
+      <!-- Medium lines -->
+      <path d="M10,0 L0,20 L20,30 L50,20 L75,30 L90,10" stroke="white" stroke-width="1" fill="none" />
+      <path d="M20,0 L10,40 L30,60 L50,50 L70,60 L100,40" stroke="white" stroke-width="1" fill="none" />
+      <path d="M30,100 L20,75 L50,90 L80,70 L100,80" stroke="white" stroke-width="1" fill="none" />
+      <path d="M70,0 L80,20 L60,40 L70,70 L50,80 L30,100" stroke="white" stroke-width="1" fill="none" />
+      
+      <!-- Thin lines -->
+      <path d="M0,30 L15,20 L35,35 L45,15 L60,25 L75,10 L90,20 L100,10" stroke="white" stroke-width="0.5" fill="none" />
+      <path d="M0,50 L15,60 L25,45 L45,55 L60,40 L80,50 L100,20" stroke="white" stroke-width="0.5" fill="none" />
+      <path d="M0,60 L20,50 L40,65 L60,55 L80,60 L100,70" stroke="white" stroke-width="0.5" fill="none" />
+      <path d="M20,0 L10,20 L20,40 L15,60 L25,80 L15,100" stroke="white" stroke-width="0.5" fill="none" />
+      <path d="M40,0 L50,15 L45,35 L55,50 L45,70 L55,90 L45,100" stroke="white" stroke-width="0.5" fill="none" />
+      <path d="M60,0 L70,15 L65,35 L75,50 L65,70 L75,85 L70,100" stroke="white" stroke-width="0.5" fill="none" />
+      <path d="M80,0 L90,15 L85,35 L95,55 L85,75 L95,90 L90,100" stroke="white" stroke-width="0.5" fill="none" />
+      <path d="M0,80 L20,90 L35,75 L50,85 L65,75 L80,90 L100,85" stroke="white" stroke-width="0.5" fill="none" />
+    </pattern>
+  </defs>
+  <!-- Apply the pattern as the fill -->
+  <rect width="100%" height="100%" fill="url(#networkPattern)"/>
+</svg> 

@@ -16,6 +16,7 @@ export interface ToolbarProps {
   onAIHelper: () => void;
   onFileNameChange?: (newName: string) => void;
   onInsertMultipleStructures?: (structures: string[]) => void;
+  // Removed onTestAnimation
 }
 
 const songStructureOptions = [
@@ -42,6 +43,7 @@ export function Toolbar({
   onAIHelper,
   onFileNameChange,
   onInsertMultipleStructures
+  // Removed onTestAnimation
 }: ToolbarProps) {
   const [isStructureOpen, setIsStructureOpen] = useState(false);
   const [isMultiStructureOpen, setIsMultiStructureOpen] = useState(false);
