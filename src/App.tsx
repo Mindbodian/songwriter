@@ -435,6 +435,14 @@ export function App() {
     setMpcPads(prev => prev.map(pad => pad.id === padId ? { ...pad, speed } : pad));
   };
 
+  // Test animation function
+  const handleTestAnimation = () => {
+    setShowToastyImage(true);
+    setTimeout(() => {
+      setShowToastyImage(false);
+    }, 3000);
+  };
+
   // Show login screen if not authenticated
   if (!isAuthenticated) {
     return <LoginScreen onLogin={handleLogin} />;
@@ -472,6 +480,7 @@ export function App() {
                   onAIHelper={() => setShowAIHelper(true)}
                   onPrintLyrics={handlePrintLyrics}
                   onInsertMultipleStructures={handleInsertMultipleStructures}
+                  onTestAnimation={handleTestAnimation}
                 />
 
 
