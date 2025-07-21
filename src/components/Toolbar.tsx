@@ -16,7 +16,9 @@ export interface ToolbarProps {
   onAIHelper: () => void;
   onFileNameChange?: (newName: string) => void;
   onInsertMultipleStructures?: (structures: string[]) => void;
+
   // Removed onTestAnimation
+
 }
 
 const songStructureOptions = [
@@ -42,8 +44,10 @@ export function Toolbar({
   onInsertStructure,
   onAIHelper,
   onFileNameChange,
+
   onInsertMultipleStructures
   // Removed onTestAnimation
+
 }: ToolbarProps) {
   const [isStructureOpen, setIsStructureOpen] = useState(false);
   const [isMultiStructureOpen, setIsMultiStructureOpen] = useState(false);
@@ -153,6 +157,16 @@ export function Toolbar({
           <span className="text-amber-400">✨</span>
           <span>AI Helper</span>
         </button>
+
+        {onTestAnimation && (
+          <button
+            onClick={onTestAnimation}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-200 text-white hover:text-amber-400 active:translate-y-0.5"
+          >
+            <span className="text-red-400">🎭</span>
+            <span>Test Animation</span>
+          </button>
+        )}
 
         <div className="h-6 w-px bg-gray-700" />
 

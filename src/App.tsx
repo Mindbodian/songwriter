@@ -454,6 +454,7 @@ export function App() {
     }, 3000);
   };
 
+
   if (showWelcome) {
     return <WelcomeScreen onFinish={() => setShowWelcome(false)} />;
   }
@@ -484,15 +485,54 @@ export function App() {
                     onOpen={handleOpen}
                     onSave={handleSave}
                     onSaveAs={handleShowSaveModal}
-                    onRhymeDictionary={() => setShowRhymeDictionary(true)}
-                    onIdeas={() => setShowIdeasPage(true)}
-                    onCopyLyrics={handleCopyLyrics}
-                    onInsertStructure={handleInsertStructure}
-                    onAIHelper={() => setShowAIHelper(true)}
-                    onPrintLyrics={handlePrintLyrics}
-                    onInsertMultipleStructures={handleInsertMultipleStructures}
-                    onTestAnimation={handleTestAnimation}
-                  />
+                    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+                    const handleLogin = () => {
+                      setIsAuthenticated(true);
+                      const handleLogin = () => {
+                        setIsAuthenticated(true);
+                     
+                      
+                      if (!isAuthenticated) {
+                        return <LoginScreen onLogin={handleLogin} />;
+                      }
+                      
+  }
+
+  return (
+    <AudioProvider>
+      <div className="relative min-h-screen">
+        <Router>
+          <Routes>
+            <Route path="/game" element={<PlatformerGame />} />
+            <Route path="/" element={
+              <div className="min-h-screen bg-gray-900 flex flex-col">
+                <Header
+                  charCount={charCount}
+                  wordCount={wordCount}
+                  mpcPads={mpcPads}
+                  onPadAudioSave={handlePadAudioSave}
+                  activePadIndex={activePadIndex}
+                  setActivePadIndex={setActivePadIndex}
+                  onPadSpeedChange={handlePadSpeedChange}
+                />
+                <ParentalAdvisoryWarning show={showAdvisory} animate={advisoryAnimate} onAnimationEnd={handleAdvisoryAnimationEnd} />
+                
+                <Toolbar
+                  fileName={fileName}
+                  onNew={handleNew}
+                  onOpen={handleOpen}
+                  onSave={handleSave}
+                  onSaveAs={handleShowSaveModal}
+                  onRhymeDictionary={() => setShowRhymeDictionary(true)}
+                  onIdeas={() => setShowIdeasPage(true)}
+                  onCopyLyrics={handleCopyLyrics}
+                  onInsertStructure={handleInsertStructure}
+                  onAIHelper={() => setShowAIHelper(true)}
+                  onPrintLyrics={handlePrintLyrics}
+                  onInsertMultipleStructures={handleInsertMultipleStructures}
+                  onTestAnimation={handleTestAnimation}
+
 
 
 
